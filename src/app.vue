@@ -77,7 +77,7 @@ button [class*=icono-]
 
 <template lang="jade">
 header
-    p 测测你的身价是多少？
+    p 这个程序员啥时候才能财务自由？
 section.questions(v-if="currentQuestion()" v-transition="fade")
     article.question(
         v-component="question"
