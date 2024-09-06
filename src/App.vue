@@ -1,6 +1,6 @@
 <template>
   <header>
-    <p>测测你的身价是多少？</p>
+    <p>这个程序员啥时候才能财务自由?</p>
   </header>
   <section class="questions" v-if="currentQuestion">
     <Question 
@@ -56,7 +56,7 @@ export default {
     const questions = ref(questionsData)
 
     onMounted(() => {
-      document.title = '测一测你的身价是多少？',
+      document.title = '这个程序员啥时候才能财务自由?',
       console.log('Initial state:', {
         currentQuestionIndex: currentQuestionIndex.value,
         currentQuestion: currentQuestion.value,
@@ -78,8 +78,8 @@ export default {
 
     const weiboShareUrl = computed(() => {
       const appUrl = 'http://xitu.github.io/coder-price/'
-      const desc = `${appUrl}：作为一个程序猿我的身价是￥${totalPrice.value}，来测测你的身价是多少！@稀土圈`
-      const url = 'https://xitu.io'
+      const desc = `${appUrl}：作为一个程序猿，我会在${totalPrice.value}财务自由，来测测你的是什么时候！`
+      const url = 'https://www.marscode.cn/'
       return `http://service.weibo.com/share/share.php?title=${encodeURIComponent(desc)}&url=${encodeURIComponent(url)}`
     })
 
@@ -119,7 +119,7 @@ export default {
         totalPrice.value = newPrice
 
         if (currentQuestionIndex.value === questions.value.length) {
-          document.title = `作为一个程序猿我的身价是￥${totalPrice.value}，来测测你的身价是多少！`
+          document.title = `作为一个程序猿，我会在${totalPrice.value}岁财务自由，来测测你的！`
         }
       }
     }
