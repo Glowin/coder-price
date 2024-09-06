@@ -53,6 +53,7 @@ export default {
     const questions = ref(questionsData)
 
     onMounted(() => {
+      document.title = '测一测你的身价是多少？',
       console.log('Initial state:', {
         currentQuestionIndex: currentQuestionIndex.value,
         currentQuestion: currentQuestion.value,
