@@ -1,31 +1,51 @@
-<style lang="stylus">
-.title
-    padding-bottom: 10px;
-    border-bottom: 2px solid #ddd;
-.options
-    padding-left: 0;
-    list-style: none;
-.option
-    padding: 10px;
-.option.selected
-    background-color: red;
-    color: #fff;
-</style>
-
-<template lang="jade">
-.title {{index + 1}}：{{title}}
-ul.options
-    li.option.pointer(
-        v-class="selected : $index === selected"
-        v-repeat="options"
-        v-on="click : select($index)"
-    ) {{desc}}
+<template>
+  <div class="question-container">
+    <div class="title">{{ index + 1 }}：{{ question.title }}</div>
+    <ul class="options">
+      <li 
+        v-for="(option, idx) in question.options" 
+        :key="idx"
+        class="option pointer"
+        :class="{ selected: idx === question.selected }"
+        @click="$emit('select', idx)"
+      >
+        {{ option.desc }}
+      </li>
+    </ul>
+  </div>
 </template>
 
-<script lang="coffee">
-module.exports =
-    methods:
-        select: (index) ->
-            @selected = index
+<script setup>
+import { defineProps, defineEmits } from 'vue'
 
+const props = defineProps(['question', 'index'])
+const emit = defineEmits(['select'])
+
+const selectOption = (idx) => {
+  emit('select', idx)
+}
 </script>
+
+<style lang="stylus" scoped>
+.question-container
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+.title
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+.options
+  padding-left: 0;
+  list-style: none;
+.option
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+.option.selected
+  background-color: red;
+  color: #fff;
+</style>
