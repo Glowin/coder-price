@@ -1,6 +1,6 @@
 <template>
   <div class="question-container">
-    <div class="title">{{ index + 1 }}：{{ question.title }}</div>
+    <div class="title"><b>{{ index + 1 }}：{{ question.title }}</b></div>
     <ul class="options">
       <li 
         v-for="(option, idx) in question.options" 

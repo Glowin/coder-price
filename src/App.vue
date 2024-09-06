@@ -19,19 +19,19 @@
     <button>
       <i class="icono-share"></i>
     </button>
-    <p>这个程序员需要 ￥{{ totalPrice }} 才能招的起！</p>
+    <p>这个程序员 <b>{{ totalPrice }}</b> 岁才能财务自由！</p>
     <p v-if="inWechat" style="color: red;">点击右上角分享到微信</p>
     <p v-else>
       <a :href="weiboShareUrl" target="_blank">分享到微博</a>
     </p>
     <p class="promo">
-      下载
-      <a href="https://gold.xitu.io/app">掘金</a>
-      应用，挖掘更多的技术干货
+      10x 程序员都在用
+      <a href="https://www.marscode.cn/">豆包MarsCode</a>
+      刷面试算法题
     </p>
   </section>
   <footer>
-    <p>￥{{ showPrice }}</p>
+    <p>可能是<b>{{ showPrice }}岁？</b></p>
   </footer>
 </template>
 
@@ -49,7 +49,10 @@ export default {
   setup() {
     const currentQuestionIndex = ref(0)
     const totalPrice = ref(0)
-    const showPrice = ref(0)
+    const getRandomInt = (min, max) => {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    const showPrice = ref(getRandomInt(20, 40))
     const questions = ref(questionsData)
 
     onMounted(() => {
@@ -207,7 +210,7 @@ button
     -webkit-appearance: none;
     appearance: none;
     padding: 10px;
-    border: 2px solid red;
+    border: 2px solid rgb(19 19 56);
     border-radius: 50%;
     background: none;
     color: rgb(19 19 56);
