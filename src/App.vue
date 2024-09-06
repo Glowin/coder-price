@@ -155,7 +155,7 @@ body
 header, footer
     position: absolute;
     z-index: 10;
-    background: red;
+    background: rgb(19 19 56);
     color: #fff;
     left: 0;
     right: 0;
@@ -195,7 +195,7 @@ footer
 .questions .action [class*=icono-]
     transition: all 0.3s;
 .questions .action.active [class*=icono-]
-    color: red;
+    color: rgb(19 19 56);
 .share
     padding-top: 30px;
 .share .promo
@@ -210,9 +210,9 @@ button
     border: 2px solid red;
     border-radius: 50%;
     background: none;
-    color: red;
+    color: rgb(19 19 56);
 button [class*=icono-]
-    color: red;
+    color: rgb(19 19 56);
 .share button
     margin: 20px;
 

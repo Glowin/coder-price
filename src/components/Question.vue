@@ -46,6 +46,6 @@ const selectOption = (idx) => {
   border: 1px solid #ddd;
   border-radius: 5px;
 .option.selected
-  background-color: red;
+  background-color: rgb(50 121 255);
   color: #fff;
 </style>
