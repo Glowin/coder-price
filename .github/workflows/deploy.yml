@@ -17,8 +17,13 @@ jobs:
       with:
         node-version: '20'
 
+    - name: Clean
+      run: |
+        rm -rf node_modules
+        npm cache clean --force
+        
     - name: Install dependencies
-      run: npm i
+      run: npm install
 
     - name: Build
       run: npm run build
