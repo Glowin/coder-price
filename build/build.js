@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/kalasoo/Projects/coder-price/node_modules/insert-css/index.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var inserted = {};
 
 module.exports = function (css, options) {
@@ -22,7 +22,7 @@ module.exports = function (css, options) {
     }
 };
 
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/child.js":[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 var _ = require('../util')
 
 /**
@@ -46,14 +46,11 @@ exports.$addChild = function (opts, BaseCtor) {
     : BaseCtor.options.inherit
   if (inherit) {
     var ctors = parent._childCtors
-    if (!ctors) {
-      ctors = parent._childCtors = {}
-    }
     ChildVue = ctors[BaseCtor.cid]
     if (!ChildVue) {
       var optionName = BaseCtor.options.name
       var className = optionName
-        ? _.camelize(optionName, true)
+        ? _.classify(optionName)
         : 'VueComponent'
       ChildVue = new Function(
         'return function ' + className + ' (options) {' +
@@ -70,13 +67,9 @@ exports.$addChild = function (opts, BaseCtor) {
   opts._parent = parent
   opts._root = parent.$root
   var child = new ChildVue(opts)
-  if (!this._children) {
-    this._children = []
-  }
-  this._children.push(child)
   return child
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/data.js":[function(require,module,exports){
+},{"../util":59}],3:[function(require,module,exports){
 var _ = require('../util')
 var Watcher = require('../watcher')
 var Path = require('../parsers/path')
@@ -95,7 +88,9 @@ var filterRE = /[^|]\|[^|]/
 exports.$get = function (exp) {
   var res = expParser.parse(exp)
   if (res) {
-    return res.get.call(this, this)
+    try {
+      return res.get.call(this, this)
+    } catch (e) {}
   }
 }
 
@@ -241,7 +236,7 @@ exports.$log = function (path) {
   }
   console.log(data)
 }
-},{"../parsers/directive":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/directive.js","../parsers/expression":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/expression.js","../parsers/path":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/path.js","../parsers/text":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/text.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","../watcher":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/watcher.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/dom.js":[function(require,module,exports){
+},{"../parsers/directive":47,"../parsers/expression":48,"../parsers/path":49,"../parsers/text":51,"../util":59,"../watcher":63}],4:[function(require,module,exports){
 var _ = require('../util')
 var transition = require('../transition')
 
@@ -453,7 +448,7 @@ function remove (el, vm, cb) {
   _.remove(el)
   if (cb) cb()
 }
-},{"../transition":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/transition/index.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/events.js":[function(require,module,exports){
+},{"../transition":53,"../util":59}],5:[function(require,module,exports){
 var _ = require('../util')
 
 /**
@@ -578,13 +573,11 @@ exports.$broadcast = function (event) {
   // then there's no need to broadcast.
   if (!this._eventsCount[event]) return
   var children = this._children
-  if (children) {
-    for (var i = 0, l = children.length; i < l; i++) {
-      var child = children[i]
-      child.$emit.apply(child, arguments)
-      if (!child._eventCancelled) {
-        child.$broadcast.apply(child, arguments)
-      }
+  for (var i = 0, l = children.length; i < l; i++) {
+    var child = children[i]
+    child.$emit.apply(child, arguments)
+    if (!child._eventCancelled) {
+      child.$broadcast.apply(child, arguments)
     }
   }
   return this
@@ -630,7 +623,7 @@ function modifyListenerCount (vm, event, count) {
     parent = parent.$parent
   }
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/global.js":[function(require,module,exports){
+},{"../util":59}],6:[function(require,module,exports){
 var _ = require('../util')
 var mergeOptions = require('../util/merge-option')
 
@@ -673,7 +666,11 @@ var cid = 1
 exports.extend = function (extendOptions) {
   extendOptions = extendOptions || {}
   var Super = this
-  var Sub = createClass(extendOptions.name || 'VueComponent')
+  var Sub = createClass(
+    extendOptions.name ||
+    Super.options.name ||
+    'VueComponent'
+  )
   Sub.prototype = Object.create(Super.prototype)
   Sub.prototype.constructor = Sub
   Sub.cid = cid++
@@ -701,7 +698,7 @@ exports.extend = function (extendOptions) {
 
 function createClass (name) {
   return new Function(
-    'return function ' + _.camelize(name, true) +
+    'return function ' + _.classify(name) +
     ' (options) { this._init(options) }'
   )()
 }
@@ -777,7 +774,7 @@ function createAssetRegisters (Constructor) {
 }
 
 createAssetRegisters(exports)
-},{"../compiler/compile":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/compile.js","../compiler/transclude":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/transclude.js","../config":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js","../parsers/directive":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/directive.js","../parsers/expression":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/expression.js","../parsers/path":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/path.js","../parsers/template":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/template.js","../parsers/text":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/text.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","../util/merge-option":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/merge-option.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/lifecycle.js":[function(require,module,exports){
+},{"../compiler/compile":10,"../compiler/transclude":11,"../config":12,"../parsers/directive":47,"../parsers/expression":48,"../parsers/path":49,"../parsers/template":50,"../parsers/text":51,"../util":59,"../util/merge-option":61}],7:[function(require,module,exports){
 var _ = require('../util')
 var compile = require('../compiler/compile')
 
@@ -850,8 +847,9 @@ exports.$destroy = function (remove, deferCleanup) {
 exports.$compile = function (el) {
   return compile(el, this.$options, true)(this, el)
 }
-},{"../compiler/compile":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/compile.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/batcher.js":[function(require,module,exports){
+},{"../compiler/compile":10,"../util":59}],8:[function(require,module,exports){
 var _ = require('./util')
+var MAX_UPDATE_COUNT = 10
 
 // we have two separate queues: one for directive updates
 // and one for user watcher registered via $watch().
@@ -914,7 +912,21 @@ function run (queue) {
  */
 
 exports.push = function (job) {
-  if (!job.id || !has[job.id] || flushing) {
+  var id = job.id
+  if (!id || !has[id] || flushing) {
+    if (!has[id]) {
+      has[id] = 1
+    } else {
+      has[id]++
+      // detect possible infinite update loops
+      if (has[id] > MAX_UPDATE_COUNT) {
+        _.warn(
+          'You may have an infinite update loop for the ' +
+          'watcher with expression: "' + job.expression + '".'
+        )
+        return
+      }
+    }
     // A user watcher callback could trigger another
     // directive update during the flushing; at that time
     // the directive queue would already have been run, so
@@ -924,14 +936,13 @@ exports.push = function (job) {
       return
     }
     ;(job.user ? userQueue : queue).push(job)
-    has[job.id] = job
     if (!waiting) {
       waiting = true
       _.nextTick(flush)
     }
   }
 }
-},{"./util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/cache.js":[function(require,module,exports){
+},{"./util":59}],9:[function(require,module,exports){
 /**
  * A doubly linked list-based Least Recently Used (LRU)
  * cache. Will keep most recently used items while
@@ -1044,12 +1055,14 @@ p.get = function (key, returnEntry) {
 }
 
 module.exports = Cache
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/compile.js":[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var _ = require('../util')
 var config = require('../config')
 var textParser = require('../parsers/text')
 var dirParser = require('../parsers/directive')
 var templateParser = require('../parsers/template')
+
+module.exports = compile
 
 /**
  * Compile a template and return a reusable composite link
@@ -1057,28 +1070,28 @@ var templateParser = require('../parsers/template')
  * inside. This top level compile function should only be
  * called on instance root nodes.
  *
- * When the `asParent` flag is true, this means we are doing
- * a partial compile for a component's parent scope markup
- * (See #502). This could **only** be triggered during
- * compilation of `v-component`, and we need to skip v-with,
- * v-ref & v-component in this situation.
- *
  * @param {Element|DocumentFragment} el
  * @param {Object} options
  * @param {Boolean} partial
- * @param {Boolean} asParent - compiling a component
- *                             container as its parent.
+ * @param {Boolean} transcluded
  * @return {Function}
  */
 
-module.exports = function compile (el, options, partial, asParent) {
-  var params = !partial && options.paramAttributes
-  var paramsLinkFn = params
+function compile (el, options, partial, transcluded) {
+  var isBlock = el.nodeType === 11
+  // link function for param attributes.
+  var params = options.paramAttributes
+  var paramsLinkFn = params && !partial && !transcluded && !isBlock
     ? compileParamAttributes(el, params, options)
     : null
-  var nodeLinkFn = el instanceof DocumentFragment
-    ? null
-    : compileNode(el, options, asParent)
+  // link function for the node itself.
+  // if this is a block instance, we return a link function
+  // for the attributes found on the container, if any.
+  // options._containerAttrs are collected during transclusion.
+  var nodeLinkFn = isBlock
+    ? compileBlockContainer(options._containerAttrs, params, options)
+    : compileNode(el, options)
+  // link function for the childNodes
   var childLinkFn =
     !(nodeLinkFn && nodeLinkFn.terminal) &&
     el.tagName !== 'SCRIPT' &&
@@ -1087,8 +1100,8 @@ module.exports = function compile (el, options, partial, asParent) {
       : null
 
   /**
-   * A linker function to be called on a already compiled
-   * piece of DOM, which instantiates all directive
+   * A composite linker function to be called on a already
+   * compiled piece of DOM, which instantiates all directive
    * instances.
    *
    * @param {Vue} vm
@@ -1096,11 +1109,23 @@ module.exports = function compile (el, options, partial, asParent) {
    * @return {Function|undefined}
    */
 
-  return function link (vm, el) {
+  function compositeLinkFn (vm, el) {
     var originalDirCount = vm._directives.length
-    if (paramsLinkFn) paramsLinkFn(vm, el)
-    if (nodeLinkFn) nodeLinkFn(vm, el)
-    if (childLinkFn) childLinkFn(vm, el.childNodes)
+    var parentOriginalDirCount =
+      vm.$parent && vm.$parent._directives.length
+    if (paramsLinkFn) {
+      paramsLinkFn(vm, el)
+    }
+    // cache childNodes before linking parent, fix #657
+    var childNodes = _.toArray(el.childNodes)
+    // if this is a transcluded compile, linkers need to be
+    // called in source scope, and the host needs to be
+    // passed down.
+    var source = transcluded ? vm.$parent : vm
+    var host = transcluded ? vm : undefined
+    // link
+    if (nodeLinkFn) nodeLinkFn(source, el, host)
+    if (childLinkFn) childLinkFn(source, childNodes, host)
 
     /**
      * If this is a partial compile, the linker function
@@ -1109,9 +1134,12 @@ module.exports = function compile (el, options, partial, asParent) {
      * linking.
      */
 
-    if (partial) {
-      var dirs = vm._directives.slice(originalDirCount)
-      return function unlink () {
+    if (partial && !transcluded) {
+      var selfDirs = vm._directives.slice(originalDirCount)
+      var parentDirs = vm.$parent &&
+        vm.$parent._directives.slice(parentOriginalDirCount)
+
+      var teardownDirs = function (vm, dirs) {
         var i = dirs.length
         while (i--) {
           dirs[i]._teardown()
@@ -1119,7 +1147,56 @@ module.exports = function compile (el, options, partial, asParent) {
         i = vm._directives.indexOf(dirs[0])
         vm._directives.splice(i, dirs.length)
       }
+
+      return function unlink () {
+        teardownDirs(vm, selfDirs)
+        if (parentDirs) {
+          teardownDirs(vm.$parent, parentDirs)
+        }
+      }
     }
+  }
+
+  // transcluded linkFns are terminal, because it takes
+  // over the entire sub-tree.
+  if (transcluded) {
+    compositeLinkFn.terminal = true
+  }
+
+  return compositeLinkFn
+}
+
+/**
+ * Compile the attributes found on a "block container" -
+ * i.e. the container node in the parent tempate of a block
+ * instance. We are only concerned with v-with and
+ * paramAttributes here.
+ *
+ * @param {Object} attrs - a map of attr name/value pairs
+ * @param {Array} params - param attributes list
+ * @param {Object} options
+ * @return {Function}
+ */
+
+function compileBlockContainer (attrs, params, options) {
+  if (!attrs) return null
+  var paramsLinkFn = params
+    ? compileParamAttributes(attrs, params, options)
+    : null
+  var withVal = attrs[config.prefix + 'with']
+  var withLinkFn = null
+  if (withVal) {
+    var descriptor = dirParser.parse(withVal)[0]
+    var def = options.directives['with']
+    withLinkFn = function (vm, el) {
+      vm._bindDir('with', el, descriptor, def)   
+    }
+  }
+  return function blockContainerLinkFn (vm) {
+    // explicitly passing null to the linkers
+    // since v-with doesn't need a real element
+    if (paramsLinkFn) paramsLinkFn(vm, null)
+    if (withLinkFn) withLinkFn(vm, null)
   }
 }
 
@@ -1129,16 +1206,17 @@ module.exports = function compile (el, options, partial, asParent) {
  *
  * @param {Node} node
  * @param {Object} options
- * @param {Boolean} asParent
- * @return {Function|undefined}
+ * @return {Function|null}
  */
 
-function compileNode (node, options, asParent) {
+function compileNode (node, options) {
   var type = node.nodeType
   if (type === 1 && node.tagName !== 'SCRIPT') {
-    return compileElement(node, options, asParent)
-  } else if (type === 3 && config.interpolate) {
+    return compileElement(node, options)
+  } else if (type === 3 && config.interpolate && node.data.trim()) {
     return compileTextNode(node, options)
+  } else {
+    return null
   }
 }
 
@@ -1147,14 +1225,20 @@ function compileNode (node, options, asParent) {
  *
  * @param {Element} el
  * @param {Object} options
- * @param {Boolean} asParent
  * @return {Function|null}
  */
 
-function compileElement (el, options, asParent) {
+function compileElement (el, options) {
+  if (checkTransclusion(el)) {
+    // unwrap textNode
+    if (el.hasAttribute('__vue__wrap')) {
+      el = el.firstChild
+    }
+    return compile(el, options._parent.$options, true, true)
+  }
   var linkFn, tag, component
   // check custom element component, but only on non-root
-  if (!asParent && !el.__vue__) {
+  if (!el.__vue__) {
     tag = el.tagName.toLowerCase()
     component =
       tag.indexOf('-') > 0 &&
@@ -1165,14 +1249,12 @@ function compileElement (el, options, asParent) {
   }
   if (component || el.hasAttributes()) {
     // check terminal direcitves
-    if (!asParent) {
-      linkFn = checkTerminalDirectives(el, options)
-    }
+    linkFn = checkTerminalDirectives(el, options)
     // if not terminal, build normal link function
     if (!linkFn) {
-      var dirs = collectDirectives(el, options, asParent)
+      var dirs = collectDirectives(el, options)
       linkFn = dirs.length
-        ? makeDirectivesLinkFn(dirs)
+        ? makeNodeLinkFn(dirs)
         : null
     }
   }
@@ -1190,27 +1272,32 @@ function compileElement (el, options, asParent) {
 }
 
 /**
- * Build a multi-directive link function.
+ * Build a link function for all directives on a single node.
  *
  * @param {Array} directives
  * @return {Function} directivesLinkFn
  */
 
-function makeDirectivesLinkFn (directives) {
-  return function directivesLinkFn (vm, el) {
+function makeNodeLinkFn (directives) {
+  return function nodeLinkFn (vm, el, host) {
     // reverse apply because it's sorted low to high
     var i = directives.length
-    var dir, j, k
+    var dir, j, k, target
     while (i--) {
       dir = directives[i]
+      // a directive can be transcluded if it's written
+      // on a component's container in its parent tempalte.
+      target = dir.transcluded
+        ? vm.$parent
+        : vm
       if (dir._link) {
         // custom link fn
-        dir._link(vm, el)
+        dir._link(target, el)
       } else {
         k = dir.descriptors.length
         for (j = 0; j < k; j++) {
-          vm._bindDir(dir.name, el,
-                      dir.descriptors[j], dir.def)
+          target._bindDir(dir.name, el,
+            dir.descriptors[j], dir.def, host)
         }
       }
     }
@@ -1226,7 +1313,7 @@ function makeDirectivesLinkFn (directives) {
  */
 
 function compileTextNode (node, options) {
-  var tokens = textParser.parse(node.nodeValue)
+  var tokens = textParser.parse(node.data)
   if (!tokens) {
     return null
   }
@@ -1299,7 +1386,7 @@ function makeTextNodeLinkFn (tokens, frag) {
           if (token.html) {
             _.replace(node, templateParser.parse(value, true))
           } else {
-            node.nodeValue = value
+            node.data = value
           }
         } else {
           vm._bindDir(token.type, node,
@@ -1346,19 +1433,19 @@ function compileNodeList (nodeList, options) {
  */
 
 function makeChildLinkFn (linkFns) {
-  return function childLinkFn (vm, nodes) {
-    // stablize nodes
-    nodes = _.toArray(nodes)
+  return function childLinkFn (vm, nodes, host) {
     var node, nodeLinkFn, childrenLinkFn
     for (var i = 0, n = 0, l = linkFns.length; i < l; n++) {
       node = nodes[n]
       nodeLinkFn = linkFns[i++]
       childrenLinkFn = linkFns[i++]
+      // cache childNodes before linking parent, fix #657
+      var childNodes = _.toArray(node.childNodes)
       if (nodeLinkFn) {
-        nodeLinkFn(vm, node)
+        nodeLinkFn(vm, node, host)
       }
       if (childrenLinkFn) {
-        childrenLinkFn(vm, node.childNodes)
+        childrenLinkFn(vm, childNodes, host)
       }
     }
   }
@@ -1368,7 +1455,7 @@ function makeChildLinkFn (linkFns) {
  * Compile param attributes on a root element and return
  * a paramAttributes link function.
  *
- * @param {Element} el
+ * @param {Element|Object} el
  * @param {Array} attrs
  * @param {Object} options
  * @return {Function} paramsLinkFn
@@ -1376,11 +1463,21 @@ function makeChildLinkFn (linkFns) {
 
 function compileParamAttributes (el, attrs, options) {
   var params = []
+  var isEl = el.nodeType
   var i = attrs.length
   var name, value, param
   while (i--) {
     name = attrs[i]
-    value = el.getAttribute(name)
+    if (/[A-Z]/.test(name)) {
+      _.warn(
+        'You seem to be using camelCase for a paramAttribute, ' +
+        'but HTML doesn\'t differentiate between upper and ' +
+        'lower case. You should use hyphen-delimited ' +
+        'attribute names. For more info see ' +
+        'http://vuejs.org/api/options.html#paramAttributes'
+      )
+    }
+    value = isEl ? el.getAttribute(name) : el[name]
     if (value !== null) {
       param = {
         name: name,
@@ -1388,7 +1485,7 @@ function compileParamAttributes (el, attrs, options) {
       }
       var tokens = textParser.parse(value)
       if (tokens) {
-        el.removeAttribute(name)
+        if (isEl) el.removeAttribute(name)
         if (tokens.length > 1) {
           _.warn(
             'Invalid param attribute binding: "' +
@@ -1473,13 +1570,16 @@ function checkTerminalDirectives (el, options) {
   for (var i = 0; i < 3; i++) {
     dirName = terminalDirectives[i]
     if (value = _.attr(el, dirName)) {
-      return makeTeriminalLinkFn(el, dirName, value, options)
+      return makeTerminalNodeLinkFn(el, dirName, value, options)
     }
   }
 }
 
 /**
- * Build a link function for a terminal directive.
+ * Build a node link function for a terminal directive.
+ * A terminal link function terminates the current
+ * compilation recursion and handles compilation of the
+ * subtree in the directive.
  *
  * @param {Element} el
  * @param {String} dirName
@@ -1488,14 +1588,14 @@ function checkTerminalDirectives (el, options) {
  * @return {Function} terminalLinkFn
  */
 
-function makeTeriminalLinkFn (el, dirName, value, options) {
+function makeTerminalNodeLinkFn (el, dirName, value, options) {
   var descriptor = dirParser.parse(value)[0]
   var def = options.directives[dirName]
-  var terminalLinkFn = function (vm, el) {
-    vm._bindDir(dirName, el, descriptor, def)
+  var fn = function terminalNodeLinkFn (vm, el, host) {
+    vm._bindDir(dirName, el, descriptor, def, host)
   }
-  terminalLinkFn.terminal = true
-  return terminalLinkFn
+  fn.terminal = true
+  return fn
 }
 
 /**
@@ -1503,38 +1603,37 @@ function makeTeriminalLinkFn (el, dirName, value, options) {
  *
  * @param {Element} el
  * @param {Object} options
- * @param {Boolean} asParent
  * @return {Array}
  */
 
-function collectDirectives (el, options, asParent) {
+function collectDirectives (el, options) {
   var attrs = _.toArray(el.attributes)
   var i = attrs.length
   var dirs = []
-  var attr, attrName, dir, dirName, dirDef
+  var attr, attrName, dir, dirName, dirDef, transcluded
   while (i--) {
     attr = attrs[i]
     attrName = attr.name
+    transcluded =
+      options._transcludedAttrs &&
+      options._transcludedAttrs[attrName]
     if (attrName.indexOf(config.prefix) === 0) {
       dirName = attrName.slice(config.prefix.length)
-      if (asParent &&
-          (dirName === 'with' ||
-           dirName === 'component')) {
-        continue
-      }
       dirDef = options.directives[dirName]
       _.assertAsset(dirDef, 'directive', dirName)
       if (dirDef) {
         dirs.push({
           name: dirName,
           descriptors: dirParser.parse(attr.value),
-          def: dirDef
+          def: dirDef,
+          transcluded: transcluded
         })
       }
     } else if (config.interpolate) {
       dir = collectAttrDirective(el, attrName, attr.value,
                                  options)
       if (dir) {
+        dir.transcluded = transcluded
         dirs.push(dir)
       }
     }
@@ -1556,10 +1655,6 @@ function collectDirectives (el, options, asParent) {
  */
 
 function collectAttrDirective (el, name, value, options) {
-  if (options._skipAttrs &&
-      options._skipAttrs.indexOf(name) > -1) {
-    return
-  }
   var tokens = textParser.parse(value)
   if (tokens) {
     var def = options.directives.attr
@@ -1598,9 +1693,26 @@ function directiveComparator (a, b) {
   b = b.def.priority || 0
   return a > b ? 1 : -1
 }
-},{"../config":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js","../parsers/directive":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/directive.js","../parsers/template":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/template.js","../parsers/text":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/text.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/transclude.js":[function(require,module,exports){
+
+/**
+ * Check whether an element is transcluded
+ *
+ * @param {Element} el
+ * @return {Boolean}
+ */
+
+var transcludedFlagAttr = '__vue__transcluded'
+function checkTransclusion (el) {
+  if (el.nodeType === 1 && el.hasAttribute(transcludedFlagAttr)) {
+    el.removeAttribute(transcludedFlagAttr)
+    return true
+  }
+}
+},{"../config":12,"../parsers/directive":47,"../parsers/template":50,"../parsers/text":51,"../util":59}],11:[function(require,module,exports){
 var _ = require('../util')
+var config = require('../config')
 var templateParser = require('../parsers/template')
+var transcludedFlagAttr = '__vue__transcluded'
 
 /**
  * Process an element or a DocumentFragment based on a
@@ -1615,6 +1727,29 @@ var templateParser = require('../parsers/template')
  */
 
 module.exports = function transclude (el, options) {
+  if (options && options._asComponent) {
+    // mutating the options object here assuming the same
+    // object will be used for compile right after this
+    options._transcludedAttrs = extractAttrs(el.attributes)
+    // Mark content nodes and attrs so that the compiler
+    // knows they should be compiled in parent scope.
+    var i = el.childNodes.length
+    while (i--) {
+      var node = el.childNodes[i]
+      if (node.nodeType === 1) {
+        node.setAttribute(transcludedFlagAttr, '')
+      } else if (node.nodeType === 3 && node.data.trim()) {
+        // wrap transcluded textNodes in spans, because
+        // raw textNodes can't be persisted through clones
+        // by attaching attributes.
+        var wrapper = document.createElement('span')
+        wrapper.textContent = node.data
+        wrapper.setAttribute('__vue__wrap', '')
+        wrapper.setAttribute(transcludedFlagAttr, '')
+        el.replaceChild(wrapper, node)
+      }
+    }
+  }
   // for template tags, what we want is its content as
   // a documentFragment (for block instances)
   if (el.tagName === 'TEMPLATE') {
@@ -1648,6 +1783,19 @@ function transcludeTemplate (el, options) {
     var rawContent = options._content || _.extractContent(el)
     if (options.replace) {
       if (frag.childNodes.length > 1) {
+        // this is a block instance which has no root node.
+        // however, the container in the parent template
+        // (which is replaced here) may contain v-with and
+        // paramAttributes that still need to be compiled
+        // for the child. we store all the container
+        // attributes on the options object and pass it down
+        // to the compiler.
+        var containerAttrs = options._containerAttrs = {}
+        var i = el.attributes.length
+        while (i--) {
+          var attr = el.attributes[i]
+          containerAttrs[attr.name] = attr.value
+        }
         transcludeContent(frag, rawContent)
         return frag
       } else {
@@ -1679,6 +1827,11 @@ function transcludeContent (el, raw) {
   var i = outlets.length
   if (!i) return
   var outlet, select, selected, j, main
+
+  function isDirectChild (node) {
+    return node.parentNode === raw
+  }
+
   // first pass, collect corresponding content
   // for each outlet.
   while (i--) {
@@ -1687,11 +1840,15 @@ function transcludeContent (el, raw) {
       select = outlet.getAttribute('select')
       if (select) {  // select content
         selected = raw.querySelectorAll(select)
-        outlet.content = _.toArray(
-          selected.length
-            ? selected
-            : outlet.childNodes
-        )
+        if (selected.length) {
+          // according to Shadow DOM spec, `select` can
+          // only select direct children of the host node.
+          // enforcing this also fixes #786.
+          selected = [].filter.call(selected, isDirectChild)
+        }
+        outlet.content = selected.length
+          ? selected
+          : _.toArray(outlet.childNodes)
       } else { // default content
         main = outlet
       }
@@ -1745,7 +1902,28 @@ function insertContentAt (outlet, contents) {
   }
   parent.removeChild(outlet)
 }
-},{"../parsers/template":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/template.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js":[function(require,module,exports){
+
+/**
+ * Helper to extract a component container's attribute names
+ * into a map, and filtering out `v-with` in the process.
+ * The resulting map will be used in compiler/compile to
+ * determine whether an attribute is transcluded.
+ *
+ * @param {NameNodeMap} attrs
+ */
+
+function extractAttrs (attrs) {
+  if (!attrs) return null
+  var res = {}
+  var vwith = config.prefix + 'with'
+  var i = attrs.length
+  while (i--) {
+    var name = attrs[i].name
+    if (name !== vwith) res[name] = true
+  }
+  return res
+}
+},{"../config":12,"../parsers/template":50,"../util":59}],12:[function(require,module,exports){
 module.exports = {
 
   /**
@@ -1797,6 +1975,13 @@ module.exports = {
   async: true,
 
   /**
+   * Whether to warn against errors caught when evaluating
+   * expressions.
+   */
+
+  warnExpressionErrors: true,
+
+  /**
    * Internal flag to indicate the delimiters have been
    * changed.
    *
@@ -1825,7 +2010,7 @@ Object.defineProperty(module.exports, 'delimiters', {
     this._delimitersChanged = true
   }
 })
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directive.js":[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var _ = require('./util')
 var config = require('./config')
 var Watcher = require('./watcher')
@@ -1846,10 +2031,11 @@ var expParser = require('./parsers/expression')
  *                 - {String} [arg]
  *                 - {Array<Object>} [filters]
  * @param {Object} def - directive definition object
+ * @param {Vue|undefined} host - transclusion host target
  * @constructor
  */
 
-function Directive (name, el, vm, descriptor, def) {
+function Directive (name, el, vm, descriptor, def, host) {
   // public
   this.name = name
   this.el = el
@@ -1860,6 +2046,7 @@ function Directive (name, el, vm, descriptor, def) {
   this.arg = descriptor.arg
   this.filters = _.resolveFilters(vm, descriptor.filters)
   // private
+  this._host = host
   this._locked = false
   this._bound = false
   // init
@@ -1877,7 +2064,7 @@ var p = Directive.prototype
  */
 
 p._bind = function (def) {
-  if (this.name !== 'cloak' && this.el.removeAttribute) {
+  if (this.name !== 'cloak' && this.el && this.el.removeAttribute) {
     this.el.removeAttribute(config.prefix + this.name)
   }
   if (typeof def === 'function') {
@@ -1890,18 +2077,19 @@ p._bind = function (def) {
   if (this.bind) {
     this.bind()
   }
-  if (
-    this.update && this._watcherExp &&
-    (!this.isLiteral || this._isDynamicLiteral) &&
-    !this._checkStatement()
-  ) {
+  if (this._watcherExp &&
+      (this.update || this.twoWay) &&
+      (!this.isLiteral || this._isDynamicLiteral) &&
+      !this._checkStatement()) {
     // wrapped updater for context
     var dir = this
-    var update = this._update = function (val, oldVal) {
-      if (!dir._locked) {
-        dir.update(val, oldVal)
-      }
-    }
+    var update = this._update = this.update
+      ? function (val, oldVal) {
+          if (!dir._locked) {
+            dir.update(val, oldVal)
+          }
+        }
+      : function () {} // noop if no update is provided
     // use raw expression as identifier because filters
     // make them different watchers
     var watcher = this.vm._watchers[this.raw]
@@ -1925,7 +2113,7 @@ p._bind = function (def) {
     this._watcher = watcher
     if (this._initValue != null) {
       watcher.set(this._initValue)
-    } else {
+    } else if (this.update) {
       this.update(watcher.value)
     }
   }
@@ -2047,7 +2235,7 @@ p.set = function (value, lock) {
 }
 
 module.exports = Directive
-},{"./config":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js","./parsers/expression":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/expression.js","./parsers/text":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/text.js","./util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","./watcher":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/watcher.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/attr.js":[function(require,module,exports){
+},{"./config":12,"./parsers/expression":48,"./parsers/text":51,"./util":59,"./watcher":63}],14:[function(require,module,exports){
 // xlink
 var xlinkNS = 'http://www.w3.org/1999/xlink'
 var xlinkRE = /^xlink:/
@@ -2080,7 +2268,7 @@ function xlinkHandler (value) {
     this.el.removeAttributeNS(xlinkNS, 'href')
   }
 }
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/class.js":[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var _ = require('../util')
 var addClass = _.addClass
 var removeClass = _.removeClass
@@ -2099,7 +2287,7 @@ module.exports = function (value) {
     }
   }
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/cloak.js":[function(require,module,exports){
+},{"../util":59}],16:[function(require,module,exports){
 var config = require('../config')
 
 module.exports = {
@@ -2112,7 +2300,7 @@ module.exports = {
   }
 
 }
-},{"../config":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/component.js":[function(require,module,exports){
+},{"../config":12}],17:[function(require,module,exports){
 var _ = require('../util')
 var templateParser = require('../parsers/template')
 
@@ -2141,14 +2329,22 @@ module.exports = {
       // we simply remove it from the DOM and save it in a
       // cache object, with its constructor id as the key.
       this.keepAlive = this._checkParam('keep-alive') != null
+      // check ref
+      this.refID = _.attr(this.el, 'ref')
       if (this.keepAlive) {
         this.cache = {}
+      }
+      // check inline-template
+      if (this._checkParam('inline-template') !== null) {
+        // extract inline template as a DocumentFragment
+        this.template = _.extractContent(this.el, true)
       }
       // if static, build right now.
       if (!this._isDynamicLiteral) {
         this.resolveCtor(this.expression)
-        this.childVM = this.build()
-        this.childVM.$before(this.ref)
+        var child = this.build()
+        child.$before(this.ref)
+        this.setCurrent(child)
       } else {
         // check dynamic component params
         this.readyEvent = this._checkParam('wait-for')
@@ -2193,7 +2389,9 @@ module.exports = {
     if (this.Ctor) {
       var child = vm.$addChild({
         el: el,
-        _asComponent: true
+        template: this.template,
+        _asComponent: true,
+        _host: this._host
       }, this.Ctor)
       if (this.keepAlive) {
         this.cache[this.ctorId] = child
@@ -2225,8 +2423,7 @@ module.exports = {
    * @param {Function} cb
    */
 
-  removeCurrent: function (cb) {
-    var child = this.childVM
+  remove: function (child, cb) {
     var keepAlive = this.keepAlive
     if (child) {
       child.$remove(function () {
@@ -2247,8 +2444,8 @@ module.exports = {
     if (!value) {
       // just destroy and remove current
       this.unbuild()
-      this.removeCurrent()
-      this.childVM = null
+      this.remove(this.childVM)
+      this.unsetCurrent()
     } else {
       this.resolveCtor(value)
       this.unbuild()
@@ -2273,23 +2470,48 @@ module.exports = {
 
   swapTo: function (target) {
     var self = this
+    var current = this.childVM
+    this.unsetCurrent()
+    this.setCurrent(target)
     switch (self.transMode) {
       case 'in-out':
         target.$before(self.ref, function () {
-          self.removeCurrent()
-          self.childVM = target
+          self.remove(current)
         })
         break
       case 'out-in':
-        self.removeCurrent(function () {
+        self.remove(current, function () {
           target.$before(self.ref)
-          self.childVM = target
         })
         break
       default:
-        self.removeCurrent()
+        self.remove(current)
         target.$before(self.ref)
-        self.childVM = target
+    }
+  },
+
+  /**
+   * Set childVM and parent ref
+   */
+  
+  setCurrent: function (child) {
+    this.childVM = child
+    var refID = child._refID || this.refID
+    if (refID) {
+      this.vm.$[refID] = child
+    }
+  },
+
+  /**
+   * Unset childVM and parent ref
+   */
+
+  unsetCurrent: function () {
+    var child = this.childVM
+    this.childVM = null
+    var refID = (child && child._refID) || this.refID
+    if (refID) {
+      this.vm.$[refID] = null
     }
   },
 
@@ -2309,7 +2531,7 @@ module.exports = {
   }
 
 }
-},{"../parsers/template":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/template.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/el.js":[function(require,module,exports){
+},{"../parsers/template":50,"../util":59}],18:[function(require,module,exports){
 module.exports = {
 
   isLiteral: true,
@@ -2323,10 +2545,12 @@ module.exports = {
   }
   
 }
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/events.js":[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var _ = require('../util')
 
-module.exports = { 
+module.exports = {
+
+  acceptStatement: true,
 
   bind: function () {
     var child = this.el.__vue__
@@ -2337,21 +2561,28 @@ module.exports = {
       )
       return
     }
-    var method = this.vm[this.expression]
-    if (!method) {
+  },
+
+  update: function (handler, oldHandler) {
+    if (typeof handler !== 'function') {
       _.warn(
-        '`v-events` cannot find method "' + this.expression +
-        '" on the parent instance.'
+        'Directive "v-events:' + this.expression + '" ' +
+        'expects a function value.'
       )
+      return
     }
-    child.$on(this.arg, method)
+    var child = this.el.__vue__
+    if (oldHandler) {
+      child.$off(this.arg, oldHandler)
+    }
+    child.$on(this.arg, handler)
   }
 
   // when child is destroyed, all events are turned off,
   // so no need for unbind here.
 
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/html.js":[function(require,module,exports){
+},{"../util":59}],20:[function(require,module,exports){
 var _ = require('../util')
 var templateParser = require('../parsers/template')
 
@@ -2390,7 +2621,7 @@ module.exports = {
   }
 
 }
-},{"../parsers/template":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/template.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/if.js":[function(require,module,exports){
+},{"../parsers/template":50,"../util":59}],21:[function(require,module,exports){
 var _ = require('../util')
 var compile = require('../compiler/compile')
 var templateParser = require('../parsers/template')
@@ -2409,7 +2640,7 @@ module.exports = {
         this.template = templateParser.parse(el, true)
       } else {
         this.template = document.createDocumentFragment()
-        this.template.appendChild(el)
+        this.template.appendChild(templateParser.clone(el))
       }
       // compile the nested partial
       this.linker = compile(
@@ -2429,56 +2660,99 @@ module.exports = {
   update: function (value) {
     if (this.invalid) return
     if (value) {
-      this.insert()
+      // avoid duplicate compiles, since update() can be
+      // called with different truthy values
+      if (!this.unlink) {
+        var frag = templateParser.clone(this.template)
+        this.compile(frag)
+      }
     } else {
       this.teardown()
     }
   },
 
-  insert: function () {
-    // avoid duplicate inserts, since update() can be
-    // called with different truthy values
-    if (!this.unlink) {
-      this.compile(this.template) 
-    }
-  },
-
-  compile: function (template) {
+  // NOTE: this function is shared in v-partial
+  compile: function (frag) {
     var vm = this.vm
-    var frag = templateParser.clone(template)
-    var originalChildLength = vm._children
-      ? vm._children.length
-      : 0
+    // the linker is not guaranteed to be present because
+    // this function might get called by v-partial 
     this.unlink = this.linker
       ? this.linker(vm, frag)
       : vm.$compile(frag)
     transition.blockAppend(frag, this.end, vm)
-    this.children = vm._children
-      ? vm._children.slice(originalChildLength)
-      : null
-    if (this.children && _.inDoc(vm.$el)) {
-      this.children.forEach(function (child) {
-        child._callHook('attached')
-      })
+    // call attached for all the child components created
+    // during the compilation
+    if (_.inDoc(vm.$el)) {
+      var children = this.getContainedComponents()
+      if (children) children.forEach(callAttach)
     }
   },
 
+  // NOTE: this function is shared in v-partial
   teardown: function () {
     if (!this.unlink) return
-    transition.blockRemove(this.start, this.end, this.vm)
-    if (this.children && _.inDoc(this.vm.$el)) {
-      this.children.forEach(function (child) {
-        if (!child._isDestroyed) {
-          child._callHook('detached')
-        }
-      })
+    // collect children beforehand
+    var children
+    if (_.inDoc(this.vm.$el)) {
+      children = this.getContainedComponents()
     }
+    transition.blockRemove(this.start, this.end, this.vm)
+    if (children) children.forEach(callDetach)
     this.unlink()
     this.unlink = null
+  },
+
+  // NOTE: this function is shared in v-partial
+  getContainedComponents: function () {
+    var vm = this.vm
+    var start = this.start.nextSibling
+    var end = this.end
+    var selfCompoents =
+      vm._children.length &&
+      vm._children.filter(contains)
+    var transComponents =
+      vm._transCpnts &&
+      vm._transCpnts.filter(contains)
+
+    function contains (c) {
+      var cur = start
+      var next
+      while (next !== end) {
+        next = cur.nextSibling
+        if (cur.contains(c.$el)) {
+          return true
+        }
+        cur = next
+      }
+      return false
+    }
+
+    return selfCompoents
+      ? transComponents
+        ? selfCompoents.concat(transComponents)
+        : selfCompoents
+      : transComponents
+  },
+
+  // NOTE: this function is shared in v-partial
+  unbind: function () {
+    if (this.unlink) this.unlink()
   }
 
 }
-},{"../compiler/compile":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/compile.js","../parsers/template":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/template.js","../transition":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/transition/index.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/index.js":[function(require,module,exports){
+
+function callAttach (child) {
+  if (!child._isAttached) {
+    child._callHook('attached')
+  }
+}
+
+function callDetach (child) {
+  if (child._isAttached) {
+    child._callHook('detached')
+  }
+}
+},{"../compiler/compile":10,"../parsers/template":50,"../transition":53,"../util":59}],22:[function(require,module,exports){
 // manipulation directives
 exports.text       = require('./text')
 exports.html       = require('./html')
@@ -2504,7 +2778,7 @@ exports['if']      = require('./if')
 // child vm communication directives
 exports['with']    = require('./with')
 exports.events     = require('./events')
-},{"./attr":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/attr.js","./class":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/class.js","./cloak":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/cloak.js","./component":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/component.js","./el":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/el.js","./events":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/events.js","./html":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/html.js","./if":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/if.js","./model":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/index.js","./on":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/on.js","./partial":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/partial.js","./ref":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/ref.js","./repeat":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/repeat.js","./show":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/show.js","./style":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/style.js","./text":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/text.js","./transition":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/transition.js","./with":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/with.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/checkbox.js":[function(require,module,exports){
+},{"./attr":14,"./class":15,"./cloak":16,"./component":17,"./el":18,"./events":19,"./html":20,"./if":21,"./model":25,"./on":28,"./partial":29,"./ref":30,"./repeat":31,"./show":32,"./style":33,"./text":34,"./transition":35,"./with":36}],23:[function(require,module,exports){
 var _ = require('../../util')
 
 module.exports = {
@@ -2530,7 +2804,7 @@ module.exports = {
   }
 
 }
-},{"../../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/default.js":[function(require,module,exports){
+},{"../../util":59}],24:[function(require,module,exports){
 var _ = require('../../util')
 
 module.exports = {
@@ -2544,6 +2818,8 @@ module.exports = {
     var lazy = this._checkParam('lazy') != null
     // - number: cast value into number when updating model.
     var number = this._checkParam('number') != null
+    // - debounce: debounce the input listener
+    var debounce = parseInt(this._checkParam('debounce'), 10)
 
     // handle composition events.
     // http://blog.evanyou.me/2014/01/03/composition-event/
@@ -2574,7 +2850,8 @@ module.exports = {
     // the input with the filtered value.
     // also force update for type="range" inputs to enable
     // "lock in range" (see #506)
-    this.listener = this.filters || el.type === 'range'
+    var hasReadFilter = this.filters && this.filters.read
+    this.listener = hasReadFilter || el.type === 'range'
       ? function textInputListener () {
           if (cpLocked) return
           var charsOffset
@@ -2610,8 +2887,26 @@ module.exports = {
           set()
         }
 
+    if (debounce) {
+      this.listener = _.debounce(this.listener, debounce)
+    }
     this.event = lazy ? 'change' : 'input'
-    _.on(el, this.event, this.listener)
+    // Support jQuery events, since jQuery.trigger() doesn't
+    // trigger native events in some cases and some plugins
+    // rely on $.trigger()
+    // 
+    // We want to make sure if a listener is attached using
+    // jQuery, it is also removed with jQuery, that's why
+    // we do the check for each directive instance and
+    // store that check result on itself. This also allows
+    // easier test coverage control by unsetting the global
+    // jQuery variable in tests.
+    this.hasjQuery = typeof jQuery === 'function'
+    if (this.hasjQuery) {
+      jQuery(el).on(this.event, this.listener)
+    } else {
+      _.on(el, this.event, this.listener)
+    }
 
     // IE9 doesn't fire input event on backspace/del/cut
     if (!lazy && _.isIE9) {
@@ -2644,7 +2939,11 @@ module.exports = {
 
   unbind: function () {
     var el = this.el
-    _.off(el, this.event, this.listener)
+    if (this.hasjQuery) {
+      jQuery(el).off(this.event, this.listener)
+    } else {
+      _.off(el, this.event, this.listener)
+    }
     _.off(el,'compositionstart', this.cpLock)
     _.off(el,'compositionend', this.cpUnlock)
     if (this.onCut) {
@@ -2654,7 +2953,7 @@ module.exports = {
   }
 
 }
-},{"../../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/index.js":[function(require,module,exports){
+},{"../../util":59}],25:[function(require,module,exports){
 var _ = require('../../util')
 
 var handlers = {
@@ -2711,7 +3010,7 @@ module.exports = {
   }
 
 }
-},{"../../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","./checkbox":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/checkbox.js","./default":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/default.js","./radio":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/radio.js","./select":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/select.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/radio.js":[function(require,module,exports){
+},{"../../util":59,"./checkbox":23,"./default":24,"./radio":26,"./select":27}],26:[function(require,module,exports){
 var _ = require('../../util')
 
 module.exports = {
@@ -2738,9 +3037,10 @@ module.exports = {
   }
 
 }
-},{"../../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/model/select.js":[function(require,module,exports){
+},{"../../util":59}],27:[function(require,module,exports){
 var _ = require('../../util')
 var Watcher = require('../../watcher')
+var dirParser = require('../../parsers/directive')
 
 module.exports = {
 
@@ -2752,11 +3052,17 @@ module.exports = {
     if (optionsParam) {
       initOptions.call(this, optionsParam)
     }
+    this.number = this._checkParam('number') != null
     this.multiple = el.hasAttribute('multiple')
     this.listener = function () {
       var value = self.multiple
         ? getMultiValue(el)
         : el.value
+      value = self.number
+        ? _.isArray(value)
+          ? value.map(_.toNumber)
+          : _.toNumber(value)
+        : value
       self.set(value, true)
     }
     _.on(el, 'change', this.listener)
@@ -2796,6 +3102,7 @@ module.exports = {
 
 function initOptions (expression) {
   var self = this
+  var descriptor = dirParser.parse(expression)[0]
   function optionUpdateWatcher (value) {
     if (_.isArray(value)) {
       self.el.innerHTML = ''
@@ -2809,9 +3116,12 @@ function initOptions (expression) {
   }
   this.optionWatcher = new Watcher(
     this.vm,
-    expression,
+    descriptor.expression,
     optionUpdateWatcher,
-    { deep: true }
+    {
+      deep: true,
+      filters: _.resolveFilters(this.vm, descriptor.filters)
+    }
   )
   // update with initial value
   optionUpdateWatcher(this.optionWatcher.value)
@@ -2864,8 +3174,10 @@ function checkInitialValue () {
       }
     }
   }
-  if (initValue) {
-    this._initValue = initValue
+  if (typeof initValue !== 'undefined') {
+    this._initValue = this.number
+      ? _.toNumber(initValue)
+      : initValue
   }
 }
 
@@ -2906,7 +3218,7 @@ function indexOf (arr, val) {
   }
   return -1
 }
-},{"../../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","../../watcher":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/watcher.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/on.js":[function(require,module,exports){
+},{"../../parsers/directive":47,"../../util":59,"../../watcher":63}],28:[function(require,module,exports){
 var _ = require('../util')
 
 module.exports = {
@@ -2966,7 +3278,7 @@ module.exports = {
     _.off(this.el, 'load', this.iframeBind)
   }
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/partial.js":[function(require,module,exports){
+},{"../util":59}],29:[function(require,module,exports){
 var _ = require('../util')
 var templateParser = require('../parsers/template')
 var vIf = require('./if')
@@ -2978,6 +3290,8 @@ module.exports = {
   // same logic reuse from v-if
   compile: vIf.compile,
   teardown: vIf.teardown,
+  getContainedComponents: vIf.getContainedComponents,
+  unbind: vIf.unbind,
 
   bind: function () {
     var el = this.el
@@ -3006,12 +3320,16 @@ module.exports = {
     var partial = this.vm.$options.partials[id]
     _.assertAsset(partial, 'partial', id)
     if (partial) {
-      this.compile(templateParser.parse(partial))
+      var filters = this.filters && this.filters.read
+      if (filters) {
+        partial = _.applyFilters(partial, filters, this.vm)
+      }
+      this.compile(templateParser.parse(partial, true))
     }
   }
 
 }
-},{"../parsers/template":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/template.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","./if":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/if.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/ref.js":[function(require,module,exports){
+},{"../parsers/template":50,"../util":59,"./if":21}],30:[function(require,module,exports){
 var _ = require('../util')
 
 module.exports = {
@@ -3019,27 +3337,26 @@ module.exports = {
   isLiteral: true,
 
   bind: function () {
-    var child = this.el.__vue__
-    if (!child || this.vm !== child.$parent) {
+    var vm = this.el.__vue__
+    if (!vm) {
       _.warn(
-        'v-ref should only be used on a child component ' +
-        'from the parent template.'
+        'v-ref should only be used on a component root element.'
       )
       return
     }
-    this.vm.$[this.expression] = child
-  },
-
-  unbind: function () {
-    if (this.vm.$[this.expression] === this.el.__vue__) {
-      delete this.vm.$[this.expression]
-    }
+    // If we get here, it means this is a `v-ref` on a
+    // child, because parent scope `v-ref` is stripped in
+    // `v-component` already. So we just record our own ref
+    // here - it will overwrite parent ref in `v-component`,
+    // if any.
+    vm._refID = this.expression
   }
   
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/repeat.js":[function(require,module,exports){
+},{"../util":59}],31:[function(require,module,exports){
 var _ = require('../util')
 var isObject = _.isObject
+var isPlainObject = _.isPlainObject
 var textParser = require('../parsers/text')
 var expParser = require('../parsers/expression')
 var templateParser = require('../parsers/template')
@@ -3086,7 +3403,6 @@ module.exports = {
     this.idKey =
       this._checkParam('track-by') ||
       this._checkParam('trackby') // 0.11.0 compat
-    // cache for primitive value instances
     this.cache = Object.create(null)
   },
 
@@ -3108,9 +3424,9 @@ module.exports = {
    */
 
   checkRef: function () {
-    var childId = _.attr(this.el, 'ref')
-    this.childId = childId
-      ? this.vm.$interpolate(childId)
+    var refID = _.attr(this.el, 'ref')
+    this.refID = refID
+      ? this.vm.$interpolate(refID)
       : null
     var elId = _.attr(this.el, 'el')
     this.elId = elId
@@ -3128,32 +3444,37 @@ module.exports = {
     var id = _.attr(this.el, 'component')
     var options = this.vm.$options
     if (!id) {
-      this.Ctor = _.Vue // default constructor
-      this.inherit = true // inline repeats should inherit
+      // default constructor
+      this.Ctor = _.Vue
+      // inline repeats should inherit
+      this.inherit = true
       // important: transclude with no options, just
       // to ensure block start and block end
       this.template = transclude(this.template)
       this._linkFn = compile(this.template, options)
     } else {
-      this._asComponent = true
+      this.asComponent = true
+      // check inline-template
+      if (this._checkParam('inline-template') !== null) {
+        // extract inline template as a DocumentFragment
+        this.inlineTempalte = _.extractContent(this.el, true)
+      }
       var tokens = textParser.parse(id)
       if (!tokens) { // static component
         var Ctor = this.Ctor = options.components[id]
         _.assertAsset(Ctor, 'component', id)
-        // If there's no parent scope directives and no
-        // content to be transcluded, we can optimize the
-        // rendering by pre-transcluding + compiling here
-        // and provide a link function to every instance.
-        if (!this.el.hasChildNodes() &&
-            !this.el.hasAttributes()) {
-          // merge an empty object with owner vm as parent
-          // so child vms can access parent assets.
-          var merged = mergeOptions(Ctor.options, {}, {
-            $parent: this.vm
-          })
-          this.template = transclude(this.template, merged)
-          this._linkFn = compile(this.template, merged, false, true)
-        }
+        var merged = mergeOptions(Ctor.options, {}, {
+          $parent: this.vm
+        })
+        merged.template = this.inlineTempalte || merged.template
+        merged._asComponent = true
+        merged._parent = this.vm
+        this.template = transclude(this.template, merged)
+        // Important: mark the template as a root node so that
+        // custom element components don't get compiled twice.
+        // fixes #822
+        this.template.__vue__ = true
+        this._linkFn = compile(this.template, merged)
       } else {
         // to be resolved later
         var ctorExp = textParser.tokensToExp(tokens)
@@ -3166,17 +3487,21 @@ module.exports = {
    * Update.
    * This is called whenever the Array mutates.
    *
-   * @param {Array} data
+   * @param {Array|Number|String} data
    */
 
   update: function (data) {
-    if (typeof data === 'number') {
+    data = data || []
+    var type = typeof data
+    if (type === 'number') {
       data = range(data)
+    } else if (type === 'string') {
+      data = _.toArray(data)
     }
-    this.vms = this.diff(data || [], this.vms)
+    this.vms = this.diff(data, this.vms)
     // update v-ref
-    if (this.childId) {
-      this.vm.$[this.childId] = this.vms
+    if (this.refID) {
+      this.vm.$[this.refID] = this.vms
     }
     if (this.elId) {
       this.vm.$$[this.elId] = this.vms.map(function (vm) {
@@ -3215,13 +3540,13 @@ module.exports = {
     // instance.
     for (i = 0, l = data.length; i < l; i++) {
       obj = data[i]
-      raw = converted ? obj.value : obj
+      raw = converted ? obj.$value : obj
       vm = !init && this.getVm(raw)
       if (vm) { // reusable instance
         vm._reused = true
         vm.$index = i // update $index
         if (converted) {
-          vm.$key = obj.key // update $key
+          vm.$key = obj.$key // update $key
         }
         if (idKey) { // swap track by id data
           if (alias) {
@@ -3231,8 +3556,9 @@ module.exports = {
           }
         }
       } else { // new instance
-        vm = this.build(obj, i)
+        vm = this.build(obj, i, true)
         vm._new = true
+        vm._reused = false
       }
       vms[i] = vm
       // insert if this is first run
@@ -3273,17 +3599,18 @@ module.exports = {
           vm.$before(ref)
         }
       } else {
+        var nextEl = targetNext.$el
         if (vm._reused) {
           // this is the vm we are actually in front of
           currentNext = findNextVm(vm, ref)
           // we only need to move if we are not in the right
           // place already.
           if (currentNext !== targetNext) {
-            vm.$before(targetNext.$el, null, false)
+            vm.$before(nextEl, null, false)
           }
         } else {
           // new instance, insert to existing next
-          vm.$before(targetNext.$el)
+          vm.$before(nextEl)
         }
       }
       vm._new = false
@@ -3297,36 +3624,56 @@ module.exports = {
    *
    * @param {Object} data
    * @param {Number} index
+   * @param {Boolean} needCache
    */
 
-  build: function (data, index) {
-    var original = data
+  build: function (data, index, needCache) {
     var meta = { $index: index }
     if (this.converted) {
-      meta.$key = original.key
+      meta.$key = data.$key
     }
-    var raw = this.converted ? data.value : data
+    var raw = this.converted ? data.$value : data
     var alias = this.arg
-    var hasAlias = !isObject(raw) || alias
-    // wrap the raw data with alias
-    data = hasAlias ? {} : raw
     if (alias) {
+      data = {}
       data[alias] = raw
-    } else if (hasAlias) {
+    } else if (!isPlainObject(raw)) {
+      // non-object values
+      data = {}
       meta.$value = raw
+    } else {
+      // default
+      data = raw
     }
     // resolve constructor
     var Ctor = this.Ctor || this.resolveCtor(data, meta)
     var vm = this.vm.$addChild({
       el: templateParser.clone(this.template),
-      _asComponent: this._asComponent,
+      _asComponent: this.asComponent,
+      _host: this._host,
       _linkFn: this._linkFn,
       _meta: meta,
       data: data,
-      inherit: this.inherit
+      inherit: this.inherit,
+      template: this.inlineTempalte
     }, Ctor)
+    // flag this instance as a repeat instance
+    // so that we can skip it in vm._digest
+    vm._repeat = true
     // cache instance
-    this.cacheVm(raw, vm)
+    if (needCache) {
+      this.cacheVm(raw, vm)
+    }
+    // sync back changes for $value, particularly for
+    // two-way bindings of primitive values
+    var self = this
+    vm.$watch('$value', function (val) {
+      if (self.converted) {
+        self.rawValue[vm.$key] = val
+      } else {
+        self.rawValue.$set(vm.$index, val)
+      }
+    })
     return vm
   },
 
@@ -3364,8 +3711,8 @@ module.exports = {
    */
 
   unbind: function () {
-    if (this.childId) {
-      delete this.vm.$[this.childId]
+    if (this.refID) {
+      this.vm.$[this.refID] = null
     }
     if (this.vms) {
       var i = this.vms.length
@@ -3399,7 +3746,7 @@ module.exports = {
       if (!cache[id]) {
         cache[id] = vm
       } else {
-        _.warn('Duplicate ID in v-repeat: ' + id)
+        _.warn('Duplicate track-by key in v-repeat: ' + id)
       }
     } else if (isObject(data)) {
       id = this.id
@@ -3408,7 +3755,8 @@ module.exports = {
           data[id] = vm
         } else {
           _.warn(
-            'Duplicate objects are not supported in v-repeat.'
+            'Duplicate objects are not supported in v-repeat ' +
+            'when using components or transitions.'
           )
         }
       } else {
@@ -3507,7 +3855,9 @@ function findNextVm (vm, ref) {
  */
 
 function objToArray (obj) {
-  if (!_.isPlainObject(obj)) {
+  // regardless of type, store the un-filtered raw value.
+  this.rawValue = obj
+  if (!isPlainObject(obj)) {
     return obj
   }
   var keys = Object.keys(obj)
@@ -3517,8 +3867,8 @@ function objToArray (obj) {
   while (i--) {
     key = keys[i]
     res[i] = {
-      key: key,
-      value: obj[key]
+      $key: key,
+      $value: obj[key]
     }
   }
   // `this` points to the repeat directive instance
@@ -3541,7 +3891,7 @@ function range (n) {
   }
   return ret
 }
-},{"../compiler/compile":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/compile.js","../compiler/transclude":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/transclude.js","../parsers/expression":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/expression.js","../parsers/template":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/template.js","../parsers/text":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/text.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","../util/merge-option":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/merge-option.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/show.js":[function(require,module,exports){
+},{"../compiler/compile":10,"../compiler/transclude":11,"../parsers/expression":48,"../parsers/template":50,"../parsers/text":51,"../util":59,"../util/merge-option":61}],32:[function(require,module,exports){
 var transition = require('../transition')
 
 module.exports = function (value) {
@@ -3550,7 +3900,7 @@ module.exports = function (value) {
     el.style.display = value ? '' : 'none'
   }, this.vm)
 }
-},{"../transition":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/transition/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/style.js":[function(require,module,exports){
+},{"../transition":53}],33:[function(require,module,exports){
 var _ = require('../util')
 var prefixes = ['-webkit-', '-moz-', '-ms-']
 var camelPrefixes = ['Webkit', 'Moz', 'ms']
@@ -3651,7 +4001,7 @@ function prefix (prop) {
     }
   }
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/text.js":[function(require,module,exports){
+},{"../util":59}],34:[function(require,module,exports){
 var _ = require('../util')
 
 module.exports = {
@@ -3667,68 +4017,119 @@ module.exports = {
   }
   
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/transition.js":[function(require,module,exports){
+},{"../util":59}],35:[function(require,module,exports){
 module.exports = {
 
   priority: 1000,
   isLiteral: true,
 
   bind: function () {
+    if (!this._isDynamicLiteral) {
+      this.update(this.expression)
+    }
+  },
+
+  update: function (id) {
+    var vm = this.el.__vue__ || this.vm
     this.el.__v_trans = {
-      id: this.expression
+      id: id,
+      // resolve the custom transition functions now
+      // so the transition module knows this is a
+      // javascript transition without having to check
+      // computed CSS.
+      fns: vm.$options.transitions[id]
     }
   }
 
 }
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/with.js":[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var _ = require('../util')
 var Watcher = require('../watcher')
+var expParser = require('../parsers/expression')
+var literalRE = /^(true|false|\s?('[^']*'|"[^"]")\s?)$/
 
 module.exports = {
 
   priority: 900,
 
   bind: function () {
-    var vm = this.vm
-    if (this.el !== vm.$el) {
+
+    var child = this.vm
+    var parent = child.$parent
+    var childKey = this.arg || '$data'
+    var parentKey = this.expression
+
+    if (this.el && this.el !== child.$el) {
       _.warn(
         'v-with can only be used on instance root elements.'
       )
-    } else if (!vm.$parent) {
+    } else if (!parent) {
       _.warn(
         'v-with must be used on an instance with a parent.'
       )
-    } else {
-      var key = this.arg
-      this.watcher = new Watcher(
-        vm.$parent,
-        this.expression,
-        key
-          ? function (val) {
-              vm.$set(key, val)
-            }
-          : function (val) {
-              vm.$data = val
-            }
-      )
-      // initial set
-      var initialVal = this.watcher.value
-      if (key) {
-        vm.$set(key, initialVal)
+    } else if (literalRE.test(parentKey)) {
+      // no need to setup watchers for literal bindings
+      if (!this.arg) {
+        _.warn(
+          'v-with cannot bind literal value as $data: ' +
+          parentKey
+        )
       } else {
-        vm.$data = initialVal
+        var value = expParser.parse(parentKey).get()
+        child.$set(childKey, value)
       }
+    } else {
+
+      // simple lock to avoid circular updates.
+      // without this it would stabilize too, but this makes
+      // sure it doesn't cause other watchers to re-evaluate.
+      var locked = false
+      var lock = function () {
+        locked = true
+        _.nextTick(unlock)
+      }
+      var unlock = function () {
+        locked = false
+      }
+
+      this.parentWatcher = new Watcher(
+        parent,
+        parentKey,
+        function (val) {
+          if (!locked) {
+            lock()
+            child.$set(childKey, val)
+          }
+        }
+      )
+      
+      // set the child initial value first, before setting
+      // up the child watcher to avoid triggering it
+      // immediately.
+      child.$set(childKey, this.parentWatcher.value)
+
+      this.childWatcher = new Watcher(
+        child,
+        childKey,
+        function (val) {
+          if (!locked) {
+            lock()
+            parent.$set(parentKey, val)
+          }
+        }
+      )
     }
   },
 
   unbind: function () {
-    if (this.watcher) {
-      this.watcher.teardown()
+    if (this.parentWatcher) {
+      this.parentWatcher.teardown()
+      this.childWatcher.teardown()
     }
   }
 
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","../watcher":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/watcher.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/filters/array-filters.js":[function(require,module,exports){
+},{"../parsers/expression":48,"../util":59,"../watcher":63}],37:[function(require,module,exports){
 var _ = require('../util')
 var Path = require('../parsers/path')
 
@@ -3792,8 +4193,8 @@ exports.orderBy = function (arr, sortKey, reverseKey) {
   }
   // sort on a copy to avoid mutating original array
   return arr.slice().sort(function (a, b) {
-    a = Path.get(a, key)
-    b = Path.get(b, key)
+    a = _.isObject(a) ? Path.get(a, key) : a
+    b = _.isObject(b) ? Path.get(b, key) : b
     return a === b ? 0 : a > b ? order : -order
   })
 }
@@ -3816,7 +4217,7 @@ function contains (val, search) {
     return val.toString().toLowerCase().indexOf(search) > -1
   }
 }
-},{"../parsers/path":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/path.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/filters/index.js":[function(require,module,exports){
+},{"../parsers/path":49,"../util":59}],38:[function(require,module,exports){
 var _ = require('../util')
 
 /**
@@ -3880,14 +4281,15 @@ var digitsRE = /(\d{3})(?=\d)/g
 
 exports.currency = function (value, sign) {
   value = parseFloat(value)
-  if (!value && value !== 0) return ''
+  if (!isFinite(value) || (!value && value !== 0)) return ''
   sign = sign || '$'
   var s = Math.floor(Math.abs(value)).toString(),
     i = s.length % 3,
     h = i > 0
       ? (s.slice(0, i) + (s.length > 3 ? ',' : ''))
       : '',
-    f = '.' + value.toFixed(2).slice(-2)
+    v = Math.abs(parseInt((value * 100) % 100, 10)),
+    f = '.' + (v < 10 ? ('0' + v) : v)
   return (value < 0 ? '-' : '') +
     sign + h + s.slice(i).replace(digitsRE, '$1,') + f
 }
@@ -3952,7 +4354,8 @@ exports.key.keyCodes = keyCodes
  */
 
 _.extend(exports, require('./array-filters'))
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","./array-filters":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/filters/array-filters.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/instance/compile.js":[function(require,module,exports){
+
+},{"../util":59,"./array-filters":37}],39:[function(require,module,exports){
 var _ = require('../util')
 var Directive = require('../directive')
 var compile = require('../compiler/compile')
@@ -3973,46 +4376,22 @@ var transclude = require('../compiler/transclude')
 
 exports._compile = function (el) {
   var options = this.$options
-  var parent = options._parent
   if (options._linkFn) {
+    // pre-transcluded with linker, just use it
     this._initElement(el)
     options._linkFn(this, el)
   } else {
-    var raw = el
-    if (options._asComponent) {
-      // separate container element and content
-      var content = options._content = _.extractContent(raw)
-      // create two separate linekrs for container and content
-      var parentOptions = parent.$options
-      
-      // hack: we need to skip the paramAttributes for this
-      // child instance when compiling its parent container
-      // linker. there could be a better way to do this.
-      parentOptions._skipAttrs = options.paramAttributes
-      var containerLinkFn =
-        compile(raw, parentOptions, true, true)
-      parentOptions._skipAttrs = null
-
-      if (content) {
-        var contentLinkFn =
-          compile(content, parentOptions, true)
-        // call content linker now, before transclusion
-        this._contentUnlinkFn = contentLinkFn(parent, content)
-      }
-      // tranclude, this possibly replaces original
-      el = transclude(el, options)
-      this._initElement(el)
-      // now call the container linker on the resolved el
-      this._containerUnlinkFn = containerLinkFn(parent, el)
-    } else {
-      // simply transclude
-      el = transclude(el, options)
-      this._initElement(el)
-    }
-    var linkFn = compile(el, options)
-    linkFn(this, el)
+    // transclude and init element
+    // transclude can potentially replace original
+    // so we need to keep reference
+    var original = el
+    el = transclude(el, options)
+    this._initElement(el)
+    // compile and link the rest
+    compile(el, options)(this, el)
+    // finally replace original
     if (options.replace) {
-      _.replace(raw, el)
+      _.replace(original, el)
     }
   }
   return el
@@ -4045,11 +4424,12 @@ exports._initElement = function (el) {
  * @param {Node} node   - target node
  * @param {Object} desc - parsed directive descriptor
  * @param {Object} def  - directive definition object
+ * @param {Vue|undefined} host - transclusion host component
  */
 
-exports._bindDir = function (name, node, desc, def) {
+exports._bindDir = function (name, node, desc, def, host) {
   this._directives.push(
-    new Directive(name, node, this, desc, def)
+    new Directive(name, node, this, desc, def, host)
   )
 }
 
@@ -4076,19 +4456,16 @@ exports._destroy = function (remove, deferCleanup) {
     i = parent._children.indexOf(this)
     parent._children.splice(i, 1)
   }
+  // same for transclusion host.
+  var host = this._host
+  if (host && !host._isBeingDestroyed) {
+    i = host._transCpnts.indexOf(this)
+    host._transCpnts.splice(i, 1)
+  }
   // destroy all children.
-  if (this._children) {
-    i = this._children.length
-    while (i--) {
-      this._children[i].$destroy()
-    }
-  }
-  // teardown parent linkers
-  if (this._containerUnlinkFn) {
-    this._containerUnlinkFn()
-  }
-  if (this._contentUnlinkFn) {
-    this._contentUnlinkFn()
+  i = this._children.length
+  while (i--) {
+    this._children[i].$destroy()
   }
   // teardown all directives. this also tearsdown all
   // directive-owned watchers. intentionally check for
@@ -4098,8 +4475,12 @@ exports._destroy = function (remove, deferCleanup) {
     this._directives[i]._teardown()
   }
   // teardown all user watchers.
+  var watcher
   for (i in this._userWatchers) {
-    this._userWatchers[i].teardown()
+    watcher = this._userWatchers[i]
+    if (watcher) {
+      watcher.teardown()
+    }
   }
   // remove reference to self on $el
   if (this.$el) {
@@ -4133,6 +4514,7 @@ exports._cleanup = function () {
   this.$parent =
   this.$root =
   this._children =
+  this._transCpnts =
   this._directives = null
   // call the last hook...
   this._isDestroyed = true
@@ -4140,7 +4522,7 @@ exports._cleanup = function () {
   // turn off all instance listeners.
   this.$off()
 }
-},{"../compiler/compile":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/compile.js","../compiler/transclude":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/compiler/transclude.js","../directive":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directive.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/instance/events.js":[function(require,module,exports){
+},{"../compiler/compile":10,"../compiler/transclude":11,"../directive":13,"../util":59}],40:[function(require,module,exports){
 var _ = require('../util')
 var inDoc = _.inDoc
 
@@ -4222,13 +4604,21 @@ exports._initDOMHooks = function () {
 
 function onAttached () {
   this._isAttached = true
-  var children = this._children
-  if (!children) return
-  for (var i = 0, l = children.length; i < l; i++) {
-    var child = children[i]
-    if (!child._isAttached && inDoc(child.$el)) {
-      child._callHook('attached')
-    }
+  this._children.forEach(callAttach)
+  if (this._transCpnts.length) {
+    this._transCpnts.forEach(callAttach)
+  }
+}
+
+/**
+ * Iterator to call attached hook
+ * 
+ * @param {Vue} child
+ */
+
+function callAttach (child) {
+  if (!child._isAttached && inDoc(child.$el)) {
+    child._callHook('attached')
   }
 }
 
@@ -4238,13 +4628,21 @@ function onAttached () {
 
 function onDetached () {
   this._isAttached = false
-  var children = this._children
-  if (!children) return
-  for (var i = 0, l = children.length; i < l; i++) {
-    var child = children[i]
-    if (child._isAttached && !inDoc(child.$el)) {
-      child._callHook('detached')
-    }
+  this._children.forEach(callDetach)
+  if (this._transCpnts.length) {
+    this._transCpnts.forEach(callDetach)
+  }
+}
+
+/**
+ * Iterator to call detached hook
+ * 
+ * @param {Vue} child
+ */
+
+function callDetach (child) {
+  if (child._isAttached && !inDoc(child.$el)) {
+    child._callHook('detached')
   }
 }
 
@@ -4263,7 +4661,7 @@ exports._callHook = function (hook) {
   }
   this.$emit('hook:' + hook)
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/instance/init.js":[function(require,module,exports){
+},{"../util":59}],41:[function(require,module,exports){
 var mergeOptions = require('../util/merge-option')
 
 /**
@@ -4312,9 +4710,30 @@ exports._init = function (options) {
   this._isBeingDestroyed = false
 
   // children
-  this._children =         // @type {Array}
-  this._childCtors = null  // @type {Object} - hash to cache
-                           // child constructors
+  this._children = []
+  this._childCtors = {}
+
+  // transclusion unlink functions
+  this._containerUnlinkFn =
+  this._contentUnlinkFn = null
+
+  // transcluded components that belong to the parent.
+  // need to keep track of them so that we can call
+  // attached/detached hooks on them.
+  this._transCpnts = []
+  this._host = options._host
+
+  // push self into parent / transclusion host
+  if (this.$parent) {
+    this.$parent._children.push(this)
+  }
+  if (this._host) {
+    this._host._transCpnts.push(this)
+  }
+
+  // props used in v-repeat diffing
+  this._new = true
+  this._reused = false
 
   // merge options.
   options = this.$options = mergeOptions(
@@ -4340,7 +4759,7 @@ exports._init = function (options) {
     this.$mount(options.el)
   }
 }
-},{"../util/merge-option":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/merge-option.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/instance/scope.js":[function(require,module,exports){
+},{"../util/merge-option":61}],42:[function(require,module,exports){
 var _ = require('../util')
 var Observer = require('../observer')
 var Dep = require('../observer/dep')
@@ -4460,14 +4879,11 @@ exports._digest = function () {
     this._watcherList[i].update()
   }
   var children = this._children
-  var child
-  if (children) {
-    i = children.length
-    while (i--) {
-      child = children[i]
-      if (child.$options.inherit) {
-        child._digest()
-      }
+  i = children.length
+  while (i--) {
+    var child = children[i]
+    if (child.$options.inherit) {
+      child._digest()
     }
   }
 }
@@ -4558,7 +4974,7 @@ exports._defineMeta = function (key, value) {
     }
   })
 }
-},{"../observer":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/index.js","../observer/dep":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/dep.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/array.js":[function(require,module,exports){
+},{"../observer":45,"../observer/dep":44,"../util":59}],43:[function(require,module,exports){
 var _ = require('../util')
 var arrayProto = Array.prototype
 var arrayMethods = Object.create(arrayProto)
@@ -4649,8 +5065,9 @@ _.define(
 )
 
 module.exports = arrayMethods
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/dep.js":[function(require,module,exports){
+},{"../util":59}],44:[function(require,module,exports){
 var uid = 0
+var _ = require('../util')
 
 /**
  * A dep is an observable that can have multiple
@@ -4694,13 +5111,15 @@ p.removeSub = function (sub) {
  */
 
 p.notify = function () {
-  for (var i = 0, l = this.subs.length; i < l; i++) {
-    this.subs[i].update()
+  // stablize the subscriber list first
+  var subs = _.toArray(this.subs)
+  for (var i = 0, l = subs.length; i < l; i++) {
+    subs[i].update()
   }
 }
 
 module.exports = Dep
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/index.js":[function(require,module,exports){
+},{"../util":59}],45:[function(require,module,exports){
 var _ = require('../util')
 var config = require('../config')
 var Dep = require('./dep')
@@ -4937,7 +5356,7 @@ p.removeVm = function (vm) {
 
 module.exports = Observer
 
-},{"../config":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","./array":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/array.js","./dep":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/dep.js","./object":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/object.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/object.js":[function(require,module,exports){
+},{"../config":12,"../util":59,"./array":43,"./dep":44,"./object":46}],46:[function(require,module,exports){
 var _ = require('../util')
 var objProto = Object.prototype
 
@@ -4975,6 +5394,24 @@ _.define(
 )
 
 /**
+ * Set a property on an observed object, calling add to
+ * ensure the property is observed.
+ *
+ * @param {String} key
+ * @param {*} val
+ * @public
+ */
+
+_.define(
+  objProto,
+  '$set',
+  function $set (key, val) {
+    this.$add(key, val)
+    this[key] = val
+  }
+)
+
+/**
  * Deletes a property from an observed object
  * and emits corresponding event
  *
@@ -5004,7 +5441,7 @@ _.define(
     }
   }
 )
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/directive.js":[function(require,module,exports){
+},{"../util":59}],47:[function(require,module,exports){
 var _ = require('../util')
 var Cache = require('../cache')
 var cache = new Cache(1000)
@@ -5164,30 +5601,36 @@ exports.parse = function (s) {
   cache.put(s, dirs)
   return dirs
 }
-},{"../cache":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/cache.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/expression.js":[function(require,module,exports){
+},{"../cache":9,"../util":59}],48:[function(require,module,exports){
 var _ = require('../util')
 var Path = require('./path')
 var Cache = require('../cache')
 var expressionCache = new Cache(1000)
 
-var keywords =
-  'Math,break,case,catch,continue,debugger,default,' +
-  'delete,do,else,false,finally,for,function,if,in,' +
-  'instanceof,new,null,return,switch,this,throw,true,try,' +
-  'typeof,var,void,while,with,undefined,abstract,boolean,' +
-  'byte,char,class,const,double,enum,export,extends,' +
-  'final,float,goto,implements,import,int,interface,long,' +
-  'native,package,private,protected,public,short,static,' +
-  'super,synchronized,throws,transient,volatile,' +
-  'arguments,let,yield'
+var allowedKeywords =
+  'Math,Date,this,true,false,null,undefined,Infinity,NaN,' +
+  'isNaN,isFinite,decodeURI,decodeURIComponent,encodeURI,' +
+  'encodeURIComponent,parseInt,parseFloat'
+var allowedKeywordsRE =
+  new RegExp('^(' + allowedKeywords.replace(/,/g, '\\b|') + '\\b)')
+
+// keywords that don't make sense inside expressions
+var improperKeywords =
+  'break,case,class,catch,const,continue,debugger,default,' +
+  'delete,do,else,export,extends,finally,for,function,if,' +
+  'import,in,instanceof,let,return,super,switch,throw,try,' +
+  'var,while,with,yield,enum,await,implements,package,' +
+  'proctected,static,interface,private,public'
+var improperKeywordsRE =
+  new RegExp('^(' + improperKeywords.replace(/,/g, '\\b|') + '\\b)')
 
 var wsRE = /\s/g
 var newlineRE = /\n/g
-var saveRE = /[\{,]\s*[\w\$_]+\s*:|'[^']*'|"[^"]*"/g
+var saveRE = /[\{,]\s*[\w\$_]+\s*:|('[^']*'|"[^"]*")|new |typeof |void /g
 var restoreRE = /"(\d+)"/g
 var pathTestRE = /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\['.*?'\]|\[".*?"\]|\[\d+\])*$/
 var pathReplaceRE = /[^\w$\.]([A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\['.*?'\]|\[".*?"\])*)/g
-var keywordsRE = new RegExp('^(' + keywords.replace(/,/g, '\\b|') + '\\b)')
+var booleanLiteralRE = /^(true|false)$/
 
 /**
  * Save / Rewrite / Restore
@@ -5204,13 +5647,23 @@ var saved = []
 /**
  * Save replacer
  *
+ * The save regex can match two possible cases:
+ * 1. An opening object literal
+ * 2. A string
+ * If matched as a plain string, we need to escape its
+ * newlines, since the string needs to be preserved when
+ * generating the function body.
+ *
  * @param {String} str
+ * @param {String} isString - str if matched as a string
  * @return {String} - placeholder with index
  */
 
-function save (str) {
+function save (str, isString) {
   var i = saved.length
-  saved[i] = str.replace(newlineRE, '\\n')
+  saved[i] = isString
+    ? str.replace(newlineRE, '\\n')
+    : str
   return '"' + i + '"'
 }
 
@@ -5224,7 +5677,7 @@ function save (str) {
 function rewrite (raw) {
   var c = raw.charAt(0)
   var path = raw.slice(1)
-  if (keywordsRE.test(path)) {
+  if (allowedKeywordsRE.test(path)) {
     return raw
   } else {
     path = path.indexOf('"') > -1
@@ -5256,6 +5709,12 @@ function restore (str, i) {
  */
 
 function compileExpFns (exp, needSet) {
+  if (improperKeywordsRE.test(exp)) {
+    _.warn(
+      'Avoid using reserved keywords in expression: '
+      + exp
+    )
+  }
   // reset state
   saved.length = 0
   // save strings and object literal keys
@@ -5382,16 +5841,23 @@ exports.parse = function (exp, needSet) {
   // we do a simple path check to optimize for them.
   // the check fails valid paths with unusal whitespaces,
   // but that's too rare and we don't care.
-  var res = pathTestRE.test(exp)
-    ? compilePathFns(exp)
-    : compileExpFns(exp, needSet)
+  // also skip boolean literals and paths that start with
+  // global "Math"
+  var res =
+    pathTestRE.test(exp) &&
+    // don't treat true/false as paths
+    !booleanLiteralRE.test(exp) &&
+    // Math constants e.g. Math.PI, Math.E etc.
+    exp.slice(0, 5) !== 'Math.'
+      ? compilePathFns(exp)
+      : compileExpFns(exp, needSet)
   expressionCache.put(exp, res)
   return res
 }
 
 // Export the pathRegex for external use
 exports.pathTestRE = pathTestRE
-},{"../cache":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/cache.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","./path":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/path.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/path.js":[function(require,module,exports){
+},{"../cache":9,"../util":59,"./path":49}],49:[function(require,module,exports){
 var _ = require('../util')
 var Cache = require('../cache')
 var pathCache = new Cache(1000)
@@ -5619,10 +6085,7 @@ function formatAccessor(key) {
  */
 
 exports.compileGetter = function (path) {
-  var body =
-    'try{return o' +
-    path.map(formatAccessor).join('') +
-    '}catch(e){};'
+  var body = 'return o' + path.map(formatAccessor).join('')
   return new Function('o', body)
 }
 
@@ -5692,7 +6155,7 @@ exports.set = function (obj, path, val) {
   }
   return true
 }
-},{"../cache":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/cache.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/template.js":[function(require,module,exports){
+},{"../cache":9,"../util":59}],50:[function(require,module,exports){
 var _ = require('../util')
 var Cache = require('../cache')
 var templateCache = new Cache(1000)
@@ -5821,9 +6284,19 @@ function nodeToFragment (node) {
   ) {
     return node.content
   }
-  return tag === 'SCRIPT'
-    ? stringToFragment(node.textContent)
-    : stringToFragment(node.innerHTML)
+  // script template
+  if (tag === 'SCRIPT') {
+    return stringToFragment(node.textContent)
+  }
+  // normal node, clone it to avoid mutating the original
+  var clone = exports.clone(node)
+  var frag = document.createDocumentFragment()
+  var child
+  /* jshint boss:true */
+  while (child = clone.firstChild) {
+    frag.appendChild(child)
+  }
+  return frag
 }
 
 // Test for the presence of the Safari template cloning bug
@@ -5943,7 +6416,7 @@ exports.parse = function (template, clone, noSelector) {
     ? exports.clone(frag)
     : frag
 }
-},{"../cache":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/cache.js","../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/text.js":[function(require,module,exports){
+},{"../cache":9,"../util":59}],51:[function(require,module,exports){
 var Cache = require('../cache')
 var config = require('../config')
 var dirParser = require('./directive')
@@ -6115,14 +6588,15 @@ function inlineFilters (exp) {
         var args = filter.args
           ? ',"' + filter.args.join('","') + '"'
           : ''
-        exp = 'this.$options.filters["' + filter.name + '"]' +
+        filter = 'this.$options.filters["' + filter.name + '"]'
+        exp = '(' + filter + '.read||' + filter + ')' +
           '.apply(this,[' + exp + args + '])'
       }
       return exp
     }
   }
 }
-},{"../cache":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/cache.js","../config":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js","./directive":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/directive.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/transition/css.js":[function(require,module,exports){
+},{"../cache":9,"../config":12,"./directive":47}],52:[function(require,module,exports){
 var _ = require('../util')
 var addClass = _.addClass
 var removeClass = _.removeClass
@@ -6312,10 +6786,11 @@ module.exports = function (el, direction, op, data, cb) {
     push(el, direction, op, leaveClass, cb)
   }
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/transition/index.js":[function(require,module,exports){
+},{"../util":59}],53:[function(require,module,exports){
 var _ = require('../util')
 var applyCSSTransition = require('./css')
 var applyJSTransition = require('./js')
+var doc = typeof document === 'undefined' ? null : document
 
 /**
  * Append with transition.
@@ -6437,7 +6912,7 @@ var apply = exports.apply = function (el, direction, op, vm, cb) {
     return
   }
   // determine the transition type on the element
-  var jsTransition = vm.$options.transitions[transData.id]
+  var jsTransition = transData.fns
   if (jsTransition) {
     // js
     applyJSTransition(
@@ -6449,7 +6924,15 @@ var apply = exports.apply = function (el, direction, op, vm, cb) {
       vm,
       cb
     )
-  } else if (_.transitionEndEvent) {
+  } else if (
+    _.transitionEndEvent &&
+    // skip CSS transitions if page is not visible -
+    // this solves the issue of transitionend events not
+    // firing until the page is visible again.
+    // pageVisibility API is supported in IE10+, same as
+    // CSS transitions.
+    !(doc && doc.hidden)
+  ) {
     // css
     applyCSSTransition(
       el,
@@ -6464,7 +6947,7 @@ var apply = exports.apply = function (el, direction, op, vm, cb) {
     if (cb) cb()
   }
 }
-},{"../util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js","./css":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/transition/css.js","./js":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/transition/js.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/transition/js.js":[function(require,module,exports){
+},{"../util":59,"./css":52,"./js":54}],54:[function(require,module,exports){
 /**
  * Apply JavaScript enter/leave functions.
  *
@@ -6478,6 +6961,9 @@ var apply = exports.apply = function (el, direction, op, vm, cb) {
  */
 
 module.exports = function (el, direction, op, data, def, vm, cb) {
+  // if the element is the root of an instance,
+  // use that instance as the transition function context
+  vm = el.__vue__ || vm
   if (data.cancel) {
     data.cancel()
     data.cancel = null
@@ -6508,7 +6994,7 @@ module.exports = function (el, direction, op, data, def, vm, cb) {
     }
   }
 }
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/debug.js":[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 var config = require('../config')
 
 /**
@@ -6520,6 +7006,7 @@ var config = require('../config')
 enableDebug()
 
 function enableDebug () {
+
   var hasConsole = typeof console !== 'undefined'
   
   /**
@@ -6541,16 +7028,12 @@ function enableDebug () {
    */
 
   exports.warn = function (msg) {
-    if (hasConsole && !config.silent) {
+    if (hasConsole && (!config.silent || config.debug)) {
       console.warn('[Vue warn]: ' + msg)
       /* istanbul ignore if */
       if (config.debug) {
         /* jshint debug: true */
         debugger
-      } else {
-        console.log(
-          'Set `Vue.config.debug = true` to enable debug mode.'
-        )
       }
     }
   }
@@ -6565,11 +7048,16 @@ function enableDebug () {
     }
   }
 }
-},{"../config":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/dom.js":[function(require,module,exports){
+},{"../config":12}],56:[function(require,module,exports){
 var config = require('../config')
 
 /**
  * Check if a node is in the document.
+ * Note: document.documentElement.contains should work here
+ * but always returns false for comment nodes in phantomjs,
+ * making unit tests difficult. This is fixed byy doing the
+ * contains() check on the node's parentNode instead of
+ * the node itself.
  *
  * @param {Node} node
  * @return {Boolean}
@@ -6580,7 +7068,10 @@ var doc =
   document.documentElement
 
 exports.inDoc = function (node) {
-  return doc && doc.contains(node)
+  var parent = node && node.parentNode
+  return doc === node ||
+    doc === parent ||
+    !!(parent && parent.nodeType === 1 && (doc.contains(parent)))
 }
 
 /**
@@ -6603,7 +7094,7 @@ exports.attr = function (node, attr) {
  * Insert el before target
  *
  * @param {Element} el
- * @param {Element} target 
+ * @param {Element} target
  */
 
 exports.before = function (el, target) {
@@ -6614,7 +7105,7 @@ exports.before = function (el, target) {
  * Insert el after target
  *
  * @param {Element} el
- * @param {Element} target 
+ * @param {Element} target
  */
 
 exports.after = function (el, target) {
@@ -6639,7 +7130,7 @@ exports.remove = function (el) {
  * Prepend el to target
  *
  * @param {Element} el
- * @param {Element} target 
+ * @param {Element} target
  */
 
 exports.prepend = function (el, target) {
@@ -6748,14 +7239,17 @@ exports.removeClass = function (el, cls) {
  * container div
  *
  * @param {Element} el
+ * @param {Boolean} asFragment
  * @return {Element}
  */
 
-exports.extractContent = function (el) {
+exports.extractContent = function (el, asFragment) {
   var child
   var rawContent
   if (el.hasChildNodes()) {
-    rawContent = document.createElement('div')
+    rawContent = asFragment
+      ? document.createDocumentFragment()
+      : document.createElement('div')
     /* jshint boss:true */
     while (child = el.firstChild) {
       rawContent.appendChild(child)
@@ -6763,7 +7257,8 @@ exports.extractContent = function (el) {
   }
   return rawContent
 }
-},{"../config":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/env.js":[function(require,module,exports){
+
+},{"../config":12}],57:[function(require,module,exports){
 /**
  * Can we use __proto__?
  *
@@ -6784,25 +7279,52 @@ var inBrowser = exports.inBrowser =
   toString.call(window) !== '[object Object]'
 
 /**
- * Defer a task to the start of the next event loop
+ * Defer a task to execute it asynchronously. Ideally this
+ * should be executed as a microtask, so we leverage
+ * MutationObserver if it's available, and fallback to
+ * setTimeout(0).
  *
  * @param {Function} cb
  * @param {Object} ctx
  */
 
-var defer = inBrowser
-  ? (window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    setTimeout)
-  : setTimeout
-
-exports.nextTick = function (cb, ctx) {
-  if (ctx) {
-    defer(function () { cb.call(ctx) }, 0)
-  } else {
-    defer(cb, 0)
+exports.nextTick = (function () {
+  var callbacks = []
+  var pending = false
+  var timerFunc
+  function handle () {
+    pending = false
+    var copies = callbacks.slice(0)
+    callbacks = []
+    for (var i = 0; i < copies.length; i++) {
+      copies[i]()
+    }
   }
-}
+  /* istanbul ignore if */
+  if (typeof MutationObserver !== 'undefined') {
+    var counter = 1
+    var observer = new MutationObserver(handle)
+    var textNode = document.createTextNode(counter)
+    observer.observe(textNode, {
+      characterData: true
+    })
+    timerFunc = function () {
+      counter = (counter + 1) % 2
+      textNode.data = counter
+    }
+  } else {
+    timerFunc = setTimeout
+  }
+  return function (cb, ctx) {
+    var func = ctx
+      ? function () { cb.call(ctx) }
+      : cb
+    callbacks.push(func)
+    if (pending) return
+    pending = true
+    timerFunc(handle, 0)
+  }
+})()
 
 /**
  * Detect if we are in IE9...
@@ -6838,7 +7360,7 @@ if (inBrowser && !exports.isIE9) {
     ? 'webkitAnimationEnd'
     : 'animationend'
 }
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/filter.js":[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 var _ = require('./debug')
 
 /**
@@ -6911,7 +7433,7 @@ exports.applyFilters = function (value, filters, vm, oldVal) {
   }
   return value
 }
-},{"./debug":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/debug.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js":[function(require,module,exports){
+},{"./debug":55}],59:[function(require,module,exports){
 var lang   = require('./lang')
 var extend = lang.extend
 
@@ -6920,7 +7442,7 @@ extend(exports, require('./env'))
 extend(exports, require('./dom'))
 extend(exports, require('./filter'))
 extend(exports, require('./debug'))
-},{"./debug":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/debug.js","./dom":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/dom.js","./env":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/env.js","./filter":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/filter.js","./lang":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/lang.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/lang.js":[function(require,module,exports){
+},{"./debug":55,"./dom":56,"./env":57,"./filter":58,"./lang":60}],60:[function(require,module,exports){
 /**
  * Check is a string starts with $ or _
  *
@@ -6929,7 +7451,7 @@ extend(exports, require('./debug'))
  */
 
 exports.isReserved = function (str) {
-  var c = str.charCodeAt(0)
+  var c = (str + '').charCodeAt(0)
   return c === 0x24 || c === 0x5F
 }
 
@@ -6980,20 +7502,43 @@ exports.stripQuotes = function (str) {
 }
 
 /**
+ * Replace helper
+ *
+ * @param {String} _ - matched delimiter
+ * @param {String} c - matched char
+ * @return {String}
+ */
+function toUpper (_, c) {
+  return c ? c.toUpperCase () : ''
+}
+
+/**
  * Camelize a hyphen-delmited string.
  *
  * @param {String} str
  * @return {String}
  */
 
-var camelRE = /[-_](\w)/g
-var capitalCamelRE = /(?:^|[-_])(\w)/g
+var camelRE = /-(\w)/g
+exports.camelize = function (str) {
+  return str.replace(camelRE, toUpper)
+}
 
-exports.camelize = function (str, cap) {
-  var RE = cap ? capitalCamelRE : camelRE
-  return str.replace(RE, function (_, c) {
-    return c ? c.toUpperCase () : ''
-  })
+/**
+ * Converts hyphen/underscore/slash delimitered names into
+ * camelized classNames.
+ *
+ * e.g. my-component => MyComponent
+ *      some_else    => SomeElse
+ *      some/comp    => SomeComp
+ *
+ * @param {String} str
+ * @return {String}
+ */
+
+var classifyRE = /(?:^|[-_\/])(\w)/g
+exports.classify = function (str) {
+  return str.replace(classifyRE, toUpper)
 }
 
 /**
@@ -7096,7 +7641,39 @@ exports.define = function (obj, key, val, enumerable) {
     configurable : true
   })
 }
-},{}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/merge-option.js":[function(require,module,exports){
+
+/**
+ * Debounce a function so it only gets called after the
+ * input stops arriving after the given wait period.
+ *
+ * @param {Function} func
+ * @param {Number} wait
+ * @return {Function} - the debounced function
+ */
+
+exports.debounce = function(func, wait) {
+  var timeout, args, context, timestamp, result
+  var later = function() {
+    var last = Date.now() - timestamp
+    if (last < wait && last >= 0) {
+      timeout = setTimeout(later, wait - last)
+    } else {
+      timeout = null
+      result = func.apply(context, args)
+      if (!timeout) context = args = null
+    }
+  }
+  return function() {
+    context = this
+    args = arguments
+    timestamp = Date.now()
+    if (!timeout) {
+      timeout = setTimeout(later, wait)
+    }
+    return result
+  }
+}
+},{}],61:[function(require,module,exports){
 var _ = require('./index')
 var extend = _.extend
 
@@ -7269,6 +7846,9 @@ strats.events = function (parentVal, childVal) {
   for (var key in childVal) {
     var parent = ret[key]
     var child = childVal[key]
+    if (parent && !_.isArray(parent)) {
+      parent = [parent]
+    }
     ret[key] = parent
       ? parent.concat(child)
       : [child]
@@ -7352,7 +7932,7 @@ module.exports = function mergeOptions (parent, child, vm) {
   }
   return options
 }
-},{"./index":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/vue.js":[function(require,module,exports){
+},{"./index":59}],62:[function(require,module,exports){
 var _ = require('./util')
 var extend = _.extend
 
@@ -7437,7 +8017,7 @@ extend(p, require('./api/child'))
 extend(p, require('./api/lifecycle'))
 
 module.exports = _.Vue = Vue
-},{"./api/child":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/child.js","./api/data":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/data.js","./api/dom":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/dom.js","./api/events":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/events.js","./api/global":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/global.js","./api/lifecycle":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/api/lifecycle.js","./directives":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/directives/index.js","./filters":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/filters/index.js","./instance/compile":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/instance/compile.js","./instance/events":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/instance/events.js","./instance/init":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/instance/init.js","./instance/scope":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/instance/scope.js","./util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/watcher.js":[function(require,module,exports){
+},{"./api/child":2,"./api/data":3,"./api/dom":4,"./api/events":5,"./api/global":6,"./api/lifecycle":7,"./directives":22,"./filters":38,"./instance/compile":39,"./instance/events":40,"./instance/init":41,"./instance/scope":42,"./util":59}],63:[function(require,module,exports){
 var _ = require('./util')
 var config = require('./config')
 var Observer = require('./observer')
@@ -7469,8 +8049,8 @@ function Watcher (vm, expression, cb, options) {
   this.id = ++uid // uid for batching
   this.active = true
   options = options || {}
-  this.deep = options.deep
-  this.user = options.user
+  this.deep = !!options.deep
+  this.user = !!options.user
   this.deps = Object.create(null)
   // setup filters if any.
   // We delegate directive filters here to the watcher
@@ -7517,10 +8097,12 @@ p.get = function () {
   try {
     value = this.getter.call(vm, vm)
   } catch (e) {
-    _.warn(
-      'Error when evaluating expression "' +
-      this.expression + '":\n   ' + e
-    )
+    if (config.warnExpressionErrors) {
+      _.warn(
+        'Error when evaluating expression "' +
+        this.expression + '":\n   ' + e
+      )
+    }
   }
   // "touch" every property so they are all tracked as
   // dependencies for deep watching
@@ -7546,10 +8128,12 @@ p.set = function (value) {
   try {
     this.setter.call(vm, vm, value)
   } catch (e) {
-    _.warn(
-      'Error when evaluating setter "' +
-      this.expression + '":\n   ' + e
-    )
+    if (config.warnExpressionErrors) {
+      _.warn(
+        'Error when evaluating setter "' +
+        this.expression + '":\n   ' + e
+      )
+    }
   }
 }
 
@@ -7598,8 +8182,9 @@ p.run = function () {
   if (this.active) {
     var value = this.get()
     if (
-      (typeof value === 'object' && value !== null) ||
-      value !== this.value
+      value !== this.value ||
+      Array.isArray(value) ||
+      this.deep
     ) {
       var oldValue = this.value
       this.value = value
@@ -7657,7 +8242,10 @@ p.teardown = function () {
     // which can improve teardown performance.
     if (!this.vm._isBeingDestroyed) {
       var list = this.vm._watcherList
-      list.splice(list.indexOf(this))
+      var i = list.indexOf(this)
+      if (i > -1) {
+        list.splice(i, 1)
+      }
     }
     for (var id in this.deps) {
       this.deps[id].removeSub(this)
@@ -7690,13 +8278,13 @@ function traverse (obj) {
 }
 
 module.exports = Watcher
-},{"./batcher":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/batcher.js","./config":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/config.js","./observer":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/observer/index.js","./parsers/expression":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/parsers/expression.js","./util":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/util/index.js"}],"/Users/kalasoo/Projects/coder-price/src/app.js":[function(require,module,exports){
+},{"./batcher":8,"./config":12,"./observer":45,"./parsers/expression":48,"./util":59}],64:[function(require,module,exports){
 var Vue = require('vue');
 var appOptions = require('./app.vue');
 var app = new Vue(appOptions).$mount('#app');
-},{"./app.vue":"/Users/kalasoo/Projects/coder-price/src/app.vue","vue":"/Users/kalasoo/Projects/coder-price/node_modules/vue/src/vue.js"}],"/Users/kalasoo/Projects/coder-price/src/app.vue":[function(require,module,exports){
-require("insert-css")("*,:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;outline:0}body,html{margin:0;border:0;padding:0;height:100%;max-height:100%;position:relative}body{font-family:\"Hiragino Sans GB\",Helvetica,Arial,sans-serif}footer,header{position:absolute;z-index:10;background:red;color:#fff;left:0;right:0;text-align:center}header{top:0}footer{bottom:0}.questions,.share{position:absolute;top:60px;right:0;bottom:60px;left:0}.questions .question{width:100%;max-width:400px;margin:0 auto;padding:20px;height:100%}.questions .action{position:absolute;bottom:10px;left:0;right:0}.questions .action.active{cursor:pointer}.questions .action [class*=icono-]{transition:all .3s}.questions .action.active [class*=icono-]{color:red}.share{padding-top:30px}.share .promo{position:absolute;bottom:10px;left:0;right:0}button{-webkit-appearance:none;appearance:none;padding:10px;border:2px solid red;border-radius:50%;background:0 0;color:red}button [class*=icono-]{color:red}.share button{margin:20px}.text-center{text-align:center}.pointer{cursor:pointer}");
-var __vue_template__ = "<header><p>测一测你的身价是多少？</p></header><section v-if=\"currentQuestion()\" v-transition=\"fade\" class=\"questions\"><article v-component=\"question\" v-with=\"currentQuestion(), index: currentQuestionIndex\" class=\"question\"></article><div v-class=\"active: enableNextQuestion()\" v-on=\"click: nextQuestion()\" class=\"action text-center\"><i class=\"icono-checkCircle\"></i></div></section><section v-if=\"!currentQuestion()\" class=\"share text-center\"><button><i class=\"icono-share\"></i></button><p>这个程序员需要 ￥{{totalPrice}} 才能招的起！</p><p><span v-if=\"inWechat\" style=\"color: red\">点击右上角分享到微信</span><span v-if=\"!inWechat\"><a v-attr=\"href: weiboShareUrl()\" target=\"_blank\">分享到微博</a></span></p><p class=\"promo\">下载<a href=\"http://gold.xitu.io/app\">掘金</a>应用，海量技术干货等你来充电！</p></section><footer><p>￥{{showPrice}}</p></footer>";
+},{"./app.vue":65,"vue":62}],65:[function(require,module,exports){
+require("insert-css")(".text-center,footer,header{text-align:center}.questions .action.active [class*=icono-],button,button [class*=icono-]{color:red}*,:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;outline:0}body,html{margin:0;border:0;padding:0;height:100%;max-height:100%;position:relative}body{font-family:\"Hiragino Sans GB\",Helvetica,Arial,sans-serif}footer,header{position:absolute;z-index:10;background:red;color:#fff;left:0;right:0}header{top:0}footer{bottom:0}.questions,.share{position:absolute;top:60px;right:0;bottom:60px;left:0}.questions .action,.share .promo{position:absolute;bottom:10px;left:0;right:0}.questions .question{width:100%;max-width:400px;margin:0 auto;padding:20px;height:100%}.questions .action.active{cursor:pointer}.questions .action [class*=icono-]{transition:all .3s}.share{padding-top:30px}button{-webkit-appearance:none;appearance:none;padding:10px;border:2px solid red;border-radius:50%;background:0 0}.share button{margin:20px}.pointer{cursor:pointer}");
+var __vue_template__ = "<header><p>这个程序员啥时候才能财务自由？</p></header><section v-if=\"currentQuestion()\" v-transition=\"fade\" class=\"questions\"><article v-component=\"question\" v-with=\"currentQuestion(), index: currentQuestionIndex\" class=\"question\"></article><div v-class=\"active: enableNextQuestion()\" v-on=\"click: nextQuestion()\" class=\"action text-center\"><i class=\"icono-checkCircle\"></i></div></section><section v-if=\"!currentQuestion()\" class=\"share text-center\"><button><i class=\"icono-share\"></i></button><p>这个程序员需要 ￥{{totalPrice}} 才能招的起！</p><p><span v-if=\"inWechat\" style=\"color: red\">点击右上角分享到微信</span><span v-if=\"!inWechat\"><a v-attr=\"href: weiboShareUrl()\" target=\"_blank\">分享到微博</a></span></p><p class=\"promo\">下载<a href=\"https://gold.xitu.io/app\">掘金</a>应用，挖掘更多的技术干货</p></section><footer><p>￥{{showPrice}}</p></footer>";
 module.exports = {
   data: {
     currentQuestionIndex: 0,
@@ -7715,11 +8303,11 @@ module.exports = {
       var countPrice, showPrice, toPrice;
       countPrice = (function(_this) {
         return function() {
-          var options, price, question, selected, _i, _len, _ref;
+          var j, len, options, price, question, ref, selected;
           price = 0;
-          _ref = _this.questions;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            question = _ref[_i];
+          ref = _this.questions;
+          for (j = 0, len = ref.length; j < len; j++) {
+            question = ref[j];
             selected = question.selected;
             options = question.options;
             if (selected !== null) {
@@ -7762,7 +8350,7 @@ module.exports = {
       var appUrl, desc, url;
       appUrl = 'http://xitu.github.io/coder-price/';
       desc = appUrl + "：作为一个程序猿我的身价是￥" + this.totalPrice + "，来测测你的身价是多少！@稀土圈";
-      url = 'http://gold.xitu.io/app';
+      url = 'https://xitu.io';
       return "http://service.weibo.com/share/share.php?title=" + (encodeURIComponent(desc)) + "&url=" + (encodeURIComponent(url));
     }
   },
@@ -7773,9 +8361,9 @@ module.exports = {
   }
 };
 
-module.exports.template = __vue_template__;
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"./components/question.vue":"/Users/kalasoo/Projects/coder-price/src/components/question.vue","./questions.json":"/Users/kalasoo/Projects/coder-price/src/questions.json","insert-css":"/Users/kalasoo/Projects/coder-price/node_modules/insert-css/index.js"}],"/Users/kalasoo/Projects/coder-price/src/components/question.vue":[function(require,module,exports){
+},{"./components/question.vue":66,"./questions.json":67,"insert-css":1}],66:[function(require,module,exports){
 require("insert-css")(".title{padding-bottom:10px;border-bottom:2px solid #ddd}.options{padding-left:0;list-style:none}.option{padding:10px}.option.selected{background-color:red;color:#fff}");
 var __vue_template__ = "<div class=\"title\">{{index + 1}}：{{title}}</div><ul class=\"options\"><li v-class=\"selected : $index === selected\" v-repeat=\"options\" v-on=\"click : select($index)\" class=\"option pointer\">{{desc}}</li></ul>";
 module.exports = {
@@ -7786,150 +8374,178 @@ module.exports = {
   }
 };
 
-module.exports.template = __vue_template__;
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = __vue_template__;
 
-},{"insert-css":"/Users/kalasoo/Projects/coder-price/node_modules/insert-css/index.js"}],"/Users/kalasoo/Projects/coder-price/src/questions.json":[function(require,module,exports){
+},{"insert-css":1}],67:[function(require,module,exports){
 module.exports=[
     {
-        "title": "TA 心中的 C 语言之父是谁？",
+        "title": "你常看的技术书的封面是？",
+        "selected": null,
+        "options": [
+            {
+                "desc": "简笔画动物书",
+                "price": 20
+            },
+            {
+                "desc": "21天精通XXX",
+                "price": 30
+            },
+            {
+                "desc": "颈椎病康复指南",
+                "price": 25
+            },
+            {
+                "desc": "从零到一学会XXX",
+                "price": 50
+            }
+        ]
+    },
+    {
+        "title": "你最喜欢的编程语言是？",
+        "selected": null,
+        "options": [
+            {
+                "desc": "Python",
+                "price": -5
+            },
+            {
+                "desc": "JavaScript",
+                "price": 5
+            },
+            {
+                "desc": "Java",
+                "price": 10
+            },
+            {
+                "desc": "Java",
+                "price": 15
+            }
+        ]
+    },
+    {
+        "title": "C语言之父是？",
         "selected": null,
         "options": [
             {
                 "desc": "谭浩强",
-                "price": 500
-            },
-            {
-                "desc": "荣兰祥",
-                "price": -1000
+                "price": 20
             },
             {
                 "desc": "丹尼斯·里奇",
-                "price": 3000
+                "price": -5
+            },
+            {
+                "desc": "阮一峰",
+                "price": 15
+            },
+            {
+                "desc": "廖雪峰",
+                "price": 10
             }
         ]
     },
     {
-        "title": "TA 认为一次真诚的握手需要几次？",
+        "title": "Transformer 是什么？",
         "selected": null,
         "options": [
             {
-                "desc": "1 次",
-                "price": -1000
+                "desc": "变压器",
+                "price": 15
             },
             {
-                "desc": "3 次",
-                "price": 2000
-            },
-            {
-                "desc": "1024 次",
-                "price": 100
-            }
-        ]
-    },
-    {
-        "title": "TA 认为 Github, StackOverflow 是怎样一个网站？",
-        "selected": null,
-        "options": [
-            {
-                "desc": "不知道",
-                "price": -500
-            },
-            {
-                "desc": "┋◆冃.狌.交.伖，棑.解.漃.瘼◆ █",
-                "price": 3500
-            },
-            {
-                "desc": "404",
-                "price": -200
-            }
-        ]
-    },
-    {
-        "title": "TA 是否知道“手持两把锟斤拷”的下联？",
-        "selected": null,
-        "options": [
-            {
-                "desc": "二话不说对出：“万水千山总是红”",
+                "desc": "变形金刚",
                 "price": 5
             },
             {
-                "desc": "完全不明白在说啥",
-                "price": -800
+                "desc": "一个深度学习框架",
+                "price": -15
             },
             {
-                "desc": "淡定回复：“口中疾呼烫烫烫”",
-                "price": 2500
+                "desc": "没听说过",
+                "price": 10
             }
         ]
     },
     {
-        "title": "TA 学编程时爱看的书籍封面是？",
+        "title": "你设置的代码缩进是？",
         "selected": null,
         "options": [
             {
-                "desc": "各种各样的动物",
-                "price": 2000
+                "desc": "4 个空格",
+                "price": 5
             },
             {
-                "desc": "21 天精通 XXX",
-                "price": -1000
+                "desc": "TAB",
+                "price": 10
             },
             {
-                "desc": "現役女子大生（秘）リアルセックス 03",
-                "price": 1000
+                "desc": "2 个空格",
+                "price": -5
+            },
+            {
+                "desc": "看心情",
+                "price": -10
             }
         ]
     },
     {
-        "title": "TA 觉得 JavaScript 和下面哪一个语言血缘关系最近？",
+        "title": "遇到 bug 时，你的第一反应是？",
         "selected": null,
         "options": [
             {
-                "desc": "Java",
-                "price": -1000
+                "desc": "Google一下",
+                "price": 5
             },
             {
-                "desc": "ActionScript",
-                "price": 1000
+                "desc": "问同事",
+                "price": 2
             },
             {
-                "desc": "ECMAScript",
-                "price": 2500
+                "desc": "问 MarsCode",
+                "price": -10
+            },
+            {
+                "desc": "git blame 查是谁的锅",
+                "price": -5
             }
         ]
     },
     {
-        "title": "TA 认为 FIR 是什么？",
+        "title": "收到年终奖，你会怎么做？",
         "selected": null,
         "options": [
             {
-                "desc": "一个台湾知名乐队",
-                "price": -500
+                "desc": "购入最新款 MBP",
+                "price": -5
             },
             {
-                "desc": "一个热门应用商店",
-                "price": 500
+                "desc": "换成 BTC",
+                "price": -20
             },
             {
-                "desc": "一个测试发布工具",
-                "price": 2500
+                "desc": "投资 A 股",
+                "price": 50
+            },
+            {
+                "desc": "存钱",
+                "price": 50
             }
         ]
     },
     {
-        "title": "TA 周末是否愿意加班？",
+        "title": "Leader：周末过来加个班吧",
         "selected": null,
         "options": [
             {
-                "desc": "好呀",
-                "price": 0
+                "desc": "好的，没问题",
+                "price": 20
             },
             {
-                "desc": "不",
-                "price": -5000
+                "desc": "我*****",
+                "price": -5
             }
         ]
     }
 ]
 
-},{}]},{},["/Users/kalasoo/Projects/coder-price/src/app.js"]);
+},{}]},{},[64]);
