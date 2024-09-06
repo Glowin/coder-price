@@ -1,141 +1,169 @@
 [
     {
-        "title": "TA 心中的 C 语言之父是谁？",
+        "title": "你常看的技术书的封面是？",
+        "selected": null,
+        "options": [
+            {
+                "desc": "简笔画动物书",
+                "price": 20
+            },
+            {
+                "desc": "21天精通XXX",
+                "price": 30
+            },
+            {
+                "desc": "颈椎病康复指南",
+                "price": 25
+            },
+            {
+                "desc": "从零到一学会XXX",
+                "price": 50
+            }
+        ]
+    },
+    {
+        "title": "你最喜欢的编程语言是？",
+        "selected": null,
+        "options": [
+            {
+                "desc": "Python",
+                "price": -5
+            },
+            {
+                "desc": "JavaScript",
+                "price": 5
+            },
+            {
+                "desc": "Java",
+                "price": 10
+            },
+            {
+                "desc": "Java",
+                "price": 15
+            }
+        ]
+    },
+    {
+        "title": "C语言之父是？",
         "selected": null,
         "options": [
             {
                 "desc": "谭浩强",
-                "price": 500
-            },
-            {
-                "desc": "荣兰祥",
-                "price": -1000
+                "price": 20
             },
             {
                 "desc": "丹尼斯·里奇",
-                "price": 3000
+                "price": -5
+            },
+            {
+                "desc": "阮一峰",
+                "price": 15
+            },
+            {
+                "desc": "廖雪峰",
+                "price": 10
             }
         ]
     },
     {
-        "title": "TA 认为一次真诚的握手需要几次？",
+        "title": "Transformer 是什么？",
         "selected": null,
         "options": [
             {
-                "desc": "1 次",
-                "price": -1000
+                "desc": "变压器",
+                "price": 15
             },
             {
-                "desc": "3 次",
-                "price": 2000
-            },
-            {
-                "desc": "1024 次",
-                "price": 100
-            }
-        ]
-    },
-    {
-        "title": "TA 认为 Github, StackOverflow 是怎样一个网站？",
-        "selected": null,
-        "options": [
-            {
-                "desc": "不知道",
-                "price": -500
-            },
-            {
-                "desc": "┋◆冃.狌.交.伖，棑.解.漃.瘼◆ █",
-                "price": 3500
-            },
-            {
-                "desc": "404",
-                "price": -200
-            }
-        ]
-    },
-    {
-        "title": "TA 是否知道“手持两把锟斤拷”的下联？",
-        "selected": null,
-        "options": [
-            {
-                "desc": "二话不说对出：“万水千山总是红”",
+                "desc": "变形金刚",
                 "price": 5
             },
             {
-                "desc": "完全不明白在说啥",
-                "price": -800
+                "desc": "一个深度学习框架",
+                "price": -15
             },
             {
-                "desc": "淡定回复：“口中疾呼烫烫烫”",
-                "price": 2500
+                "desc": "没听说过",
+                "price": 10
             }
         ]
     },
     {
-        "title": "TA 学编程时爱看的书籍封面是？",
+        "title": "你设置的代码缩进是？",
         "selected": null,
         "options": [
             {
-                "desc": "各种各样的动物",
-                "price": 2000
+                "desc": "4 个空格",
+                "price": 5
             },
             {
-                "desc": "21 天精通 XXX",
-                "price": -1000
+                "desc": "TAB",
+                "price": 10
             },
             {
-                "desc": "現役女子大生（秘）リアルセックス 03",
-                "price": 1000
+                "desc": "2 个空格",
+                "price": -5
+            },
+            {
+                "desc": "看心情",
+                "price": -10
             }
         ]
     },
     {
-        "title": "TA 觉得 JavaScript 和下面哪一个语言血缘关系最近？",
+        "title": "遇到 bug 时，你的第一反应是？",
         "selected": null,
         "options": [
             {
-                "desc": "Java",
-                "price": -1000
+                "desc": "Google一下",
+                "price": 5
             },
             {
-                "desc": "ActionScript",
-                "price": 1000
+                "desc": "问同事",
+                "price": 2
             },
             {
-                "desc": "ECMAScript",
-                "price": 2500
+                "desc": "问 MarsCode",
+                "price": -10
+            },
+            {
+                "desc": "git blame 查是谁的锅",
+                "price": -5
             }
         ]
     },
     {
-        "title": "TA 认为 FIR 是什么？",
+        "title": "收到年终奖，你会怎么做？",
         "selected": null,
         "options": [
             {
-                "desc": "一个台湾知名乐队",
-                "price": -500
+                "desc": "购入最新款 MBP",
+                "price": -5
             },
             {
-                "desc": "一个热门应用商店",
-                "price": 500
+                "desc": "换成 BTC",
+                "price": -20
             },
             {
-                "desc": "一个测试发布工具",
-                "price": 2500
+                "desc": "投资 A 股",
+                "price": 50
+            },
+            {
+                "desc": "存钱",
+                "price": 50
             }
         ]
     },
     {
-        "title": "TA 周末是否愿意加班？",
+        "title": "Leader：周末过来加个班吧",
         "selected": null,
         "options": [
             {
-                "desc": "好呀",
-                "price": 0
+                "desc": "好的，没问题",
+                "price": 20
             },
             {
-                "desc": "不",
-                "price": -5000
+                "desc": "我*****",
+                "price": -5
             }
         ]
     }
