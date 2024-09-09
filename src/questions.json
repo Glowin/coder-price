@@ -38,8 +38,30 @@
                 "price": 10
             },
             {
-                "desc": "Java",
+                "desc": "C++",
                 "price": 15
+            }
+        ]
+    },
+    {
+        "title": "提到 AK，你第一时间想到的是？",
+        "selected": null,
+        "options": [
+            {
+                "desc": "AK-47",
+                "price": 20
+            },
+            {
+                "desc": "阿拉斯加州",
+                "price": -2
+            },
+            {
+                "desc": "Andrej Karpathy",
+                "price": -5
+            },
+            {
+                "desc": "@_akhaliq",
+                "price": -2
             }
         ]
     },
