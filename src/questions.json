@@ -57,11 +57,11 @@
             },
             {
                 "desc": "Andrej Karpathy",
-                "price": -5
+                "price": -1
             },
             {
                 "desc": "@_akhaliq",
-                "price": -2
+                "price": 1
             }
         ]
     },
@@ -75,7 +75,7 @@
             },
             {
                 "desc": "丹尼斯·里奇",
-                "price": -3
+                "price": 2
             },
             {
                 "desc": "阮一峰",
@@ -101,7 +101,7 @@
             },
             {
                 "desc": "一个深度学习框架",
-                "price": -10
+                "price": -2
             },
             {
                 "desc": "没听说过",
@@ -123,11 +123,11 @@
             },
             {
                 "desc": "2 个空格",
-                "price": -5
+                "price": -2
             },
             {
                 "desc": "看心情",
-                "price": -2
+                "price": -1
             }
         ]
     },
@@ -159,7 +159,7 @@
         "options": [
             {
                 "desc": "购入最新款 MBP",
-                "price": -2
+                "price": 0
             },
             {
                 "desc": "换成 BTC",
@@ -185,7 +185,7 @@
             },
             {
                 "desc": "我*****",
-                "price": -5
+                "price": -2
             }
         ]
     }
