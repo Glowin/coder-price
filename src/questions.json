@@ -27,7 +27,7 @@
         "options": [
             {
                 "desc": "Python",
-                "price": -5
+                "price": 2
             },
             {
                 "desc": "JavaScript",
@@ -53,7 +53,7 @@
             },
             {
                 "desc": "阿拉斯加州",
-                "price": -2
+                "price": 5
             },
             {
                 "desc": "Andrej Karpathy",
@@ -101,7 +101,7 @@
             },
             {
                 "desc": "一个深度学习框架",
-                "price": -15
+                "price": -10
             },
             {
                 "desc": "没听说过",
