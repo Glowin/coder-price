@@ -5,19 +5,19 @@
         "options": [
             {
                 "desc": "简笔画动物书",
-                "price": 20
+                "price": 28
             },
             {
                 "desc": "21天精通XXX",
-                "price": 30
+                "price": 37
             },
             {
                 "desc": "颈椎病康复指南",
-                "price": 25
+                "price": 30
             },
             {
                 "desc": "从零到一学会XXX",
-                "price": 50
+                "price": 52
             }
         ]
     },
@@ -75,7 +75,7 @@
             },
             {
                 "desc": "丹尼斯·里奇",
-                "price": -5
+                "price": -3
             },
             {
                 "desc": "阮一峰",
@@ -127,7 +127,7 @@
             },
             {
                 "desc": "看心情",
-                "price": -10
+                "price": -2
             }
         ]
     },
@@ -145,11 +145,11 @@
             },
             {
                 "desc": "问 MarsCode",
-                "price": -10
+                "price": -5
             },
             {
                 "desc": "git blame 查是谁的锅",
-                "price": -5
+                "price": -2
             }
         ]
     },
@@ -159,7 +159,7 @@
         "options": [
             {
                 "desc": "购入最新款 MBP",
-                "price": -5
+                "price": -2
             },
             {
                 "desc": "换成 BTC",
