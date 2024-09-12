@@ -41,11 +41,16 @@ const selectOption = (idx) => {
   padding-left: 0;
   list-style: none;
 .option
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-.option.selected
-  background-color: rgb(50 121 255);
-  color: #fff;
+  padding: 10px
+  margin-bottom: 10px
+  border: 1px solid #ddd
+  border-radius: 5px
+  transition: all 0.3s ease
+
+  &:hover
+    background-color: #f0f0f0
+
+  &.selected
+    background-color: rgb(50 121 255)
+    color: #fff
 </style>

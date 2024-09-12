@@ -8,12 +8,6 @@
       :index="currentQuestionIndex"
       @select="selectOption"
     />
-    <div class="action text-center" 
-      :class="{ active: enableNextQuestion }"
-      @click="nextQuestion"
-    >
-      <i class="icono-checkCircle"></i>
-    </div>
   </section>
   <section class="share text-center" v-else>
     <button>
@@ -93,38 +87,39 @@ export default {
         currentQuestion.value.selected = index
         console.log('Current question updated:', currentQuestion.value)
       }
+
+      // 立即进入下一题
+      nextQuestion()
     }
 
     const nextQuestion = () => {
-      if (enableNextQuestion.value) {
-        currentQuestionIndex.value += 1
-        const newPrice = questions.value.reduce((sum, q) => 
-          sum + (q.selected !== null ? q.options[q.selected].price : 0), 0
-        )
-        
-        // 优化金额变化速度和平滑度
-        const duration = 500 // 总持续时间（毫秒）
-        const steps = 20 // 变化的步数
-        const stepDuration = duration / steps
-        const startPrice = showPrice.value
-        const priceChange = newPrice - startPrice
+      currentQuestionIndex.value += 1
+      const newPrice = questions.value.reduce((sum, q) => 
+        sum + (q.selected !== null ? q.options[q.selected].price : 0), 0
+      )
+      
+      // 优化金额变化速度和平滑度
+      const duration = 500 // 总持续时间（毫秒）
+      const steps = 20 // 变化的步数
+      const stepDuration = duration / steps
+      const startPrice = showPrice.value
+      const priceChange = newPrice - startPrice
 
-        let step = 0
-        const interval = setInterval(() => {
-          step++
-          if (step <= steps) {
-            showPrice.value = Math.round(startPrice + (priceChange * step / steps))
-          } else {
-            clearInterval(interval)
-            showPrice.value = newPrice // 确保最终显示精确的新价格
-          }
-        }, stepDuration)
-
-        totalPrice.value = newPrice
-
-        if (currentQuestionIndex.value === questions.value.length) {
-          document.title = `作为一个程序猿，我会在${totalPrice.value}岁财务自由，来测测你的！`
+      let step = 0
+      const interval = setInterval(() => {
+        step++
+        if (step <= steps) {
+          showPrice.value = Math.round(startPrice + (priceChange * step / steps))
+        } else {
+          clearInterval(interval)
+          showPrice.value = newPrice // 确保最终显示精确的新价格
         }
+      }, stepDuration)
+
+      totalPrice.value = newPrice
+
+      if (currentQuestionIndex.value === questions.value.length) {
+        document.title = `作为一个程序猿，我会在${totalPrice.value}岁财务自由，来测测你的！`
       }
     }
 
